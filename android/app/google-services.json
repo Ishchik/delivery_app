@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "385431766114",
+    "firebase_url": "https://deliverykursach.firebaseio.com",
+    "project_id": "deliverykursach",
+    "storage_bucket": "deliverykursach.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385431766114:android:d932880fce6f45fb59bd3b",
+        "android_client_info": {
+          "package_name": "com.ishchik.delivery_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "385431766114-nicaij1ppnncsf6pmup5tljt1tkt2mlr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1RJ4cMJiQgjU3JynJkD2I61uFRVs_mbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "385431766114-nicaij1ppnncsf6pmup5tljt1tkt2mlr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
