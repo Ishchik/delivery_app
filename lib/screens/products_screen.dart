@@ -70,7 +70,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
         ),
         Expanded(
-          flex: 12,
           child: ProductFutureBuilder(
             productTab: currentProductTab,
           ),

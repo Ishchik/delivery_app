@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'order_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:delivery_app/models/order_data.dart';
+import 'package:delivery_app/models/order.dart';
 
 class ProductItem extends StatelessWidget {
   final String productTitle;
@@ -17,101 +20,95 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(15),
-      child: Container(
-        height: 300,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey[500],
-          ),
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-        ),
-        child: Column(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      child: Card(
+        elevation: 4,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              flex: 3,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15),
-                    topLeft: Radius.circular(15),
-                  ),
-                ),
-                child: FutureBuilder(
-                  future: FirebaseStorage.instance
-                      .ref()
-                      .child(imageUrl)
-                      .getDownloadURL(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: Text('Loading...'),
-                      );
-                    }
-                    return Image(
-                      image: NetworkImage(snapshot.data.toString()),
-                      fit: BoxFit.cover,
+              child: FutureBuilder(
+                future: FirebaseStorage.instance
+                    .ref()
+                    .child(imageUrl)
+                    .getDownloadURL(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: Text('Loading...'),
                     );
-                  },
-                ),
+                  }
+                  return ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        bottomLeft: Radius.circular(4)),
+                    child: Image(
+                      image: NetworkImage(snapshot.data.toString()),
+                      height: MediaQuery.of(context).size.height / 3,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
               ),
             ),
             Expanded(
-              flex: 2,
               child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFFBDBDBD),
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(15),
-                    bottomLeft: Radius.circular(15),
-                  ),
-                ),
+                height: MediaQuery.of(context).size.height / 3,
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      child: Text(
-                        '$productTitle',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Text(
-                        '$productContent',
-                        style: TextStyle(
-                          color: Color(0xFF757575),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            '$productPrice   UAH',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Text(
+                          productTitle,
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
-                          OrderButton(
-                            onPressed: () {},
+                        ),
+                        Text(
+                          productContent,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey[500],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Price',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          '$productPrice USD',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        OrderButton(
+                          onPressed: () {
+                            Order _order = Order(productTitle, productPrice, 1);
+                            Provider.of<OrderData>(context, listen: false)
+                                .addToCart(_order);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
-import 'product_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:delivery_app/models/firestore_product.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:delivery_app/models/firestore_order.dart';
+import 'order_card.dart';
 
-class ProductFutureBuilder extends StatelessWidget {
-  final String productTab;
-  ProductFutureBuilder({this.productTab});
-
+class OrderFutureBuilder extends StatelessWidget {
   Future<List<Map<String, dynamic>>> getData() async {
+    var _user = await FirebaseAuth.instance.currentUser();
     var _firestore = Firestore.instance;
     var _querySnapshot = await _firestore
-        .collection('product_info')
-        .document('${productTab}_info')
-        .collection(productTab)
+        .collection('order_info')
+        .document('orders')
+        .collection(_user.email)
         .getDocuments();
 
     return _querySnapshot.documents.map((snap) => snap.data).toList();
   }
 
-  Widget listViewBuilder(BuildContext context, AsyncSnapshot snapshot) {
+  Widget orderListViewBuilder(BuildContext context, AsyncSnapshot snapshot) {
     List<Map<String, dynamic>> list = snapshot.data;
 
     return ListView.builder(
       itemBuilder: (context, index) {
-        FirestoreProduct product = FirestoreProduct(list[index]);
-        return ProductItem(
-          productTitle: product.name,
-          productPrice: product.price,
-          productContent: product.listString(),
-          imageUrl: product.imageUrl,
+        FirestoreOrder order = FirestoreOrder(list[index]);
+        return OrderCard(
+          orderAddress: order.orderAddress,
+          orderDate: order.orderTime,
+          orderID: 0,
+          orderList: order.orderList,
+          totalPrice: order.totalPrice,
         );
       },
       itemCount: list.length,
@@ -43,7 +43,7 @@ class ProductFutureBuilder extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text('Loading...');
         }
-        return listViewBuilder(context, snapshot);
+        return orderListViewBuilder(context, snapshot);
       },
     );
   }

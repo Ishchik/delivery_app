@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/screens/orders_screen.dart';
 import 'package:delivery_app/screens/products_screen.dart';
+import 'package:provider/provider.dart';
 import 'profile_screen.dart';
+import 'package:delivery_app/models/order_data.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -34,34 +36,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: setScreen(_currentIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.restaurant,
+    return ChangeNotifierProvider(
+      create: (context) => OrderData(),
+      child: Scaffold(
+        body: SafeArea(
+          child: setScreen(_currentIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.restaurant,
+              ),
+              title: Text('Products'),
             ),
-            title: Text('Products'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.receipt,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.receipt,
+              ),
+              title: Text('Orders'),
             ),
-            title: Text('Orders'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              title: Text('User profile'),
             ),
-            title: Text('User profile'),
-          ),
-        ],
-        onTap: onTabTap,
-        selectedItemColor: Color(0xFF03A9F4),
+          ],
+          onTap: onTabTap,
+          selectedItemColor: Color(0xFF03A9F4),
+        ),
       ),
     );
   }

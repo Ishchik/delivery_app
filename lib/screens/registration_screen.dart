@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'package:delivery_app/widgets/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:delivery_app/constants.dart';
 
 class RegistrationScreen extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
@@ -25,24 +26,8 @@ class RegistrationScreen extends StatelessWidget {
               onChanged: (value) {
                 email = value;
               },
-              decoration: InputDecoration(
-                hintText: 'Enter email',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-              ),
+              decoration:
+                  kTextFieldDecoration.copyWith(hintText: 'Enter email'),
             ),
             SizedBox(
               height: 8.0,
@@ -53,24 +38,8 @@ class RegistrationScreen extends StatelessWidget {
               onChanged: (value) {
                 password = value;
               },
-              decoration: InputDecoration(
-                hintText: 'Enter password',
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                ),
-              ),
+              decoration:
+                  kTextFieldDecoration.copyWith(hintText: 'Enter password'),
             ),
             SizedBox(
               height: 24.0,
