@@ -26,7 +26,7 @@ class OrderFutureBuilder extends StatelessWidget {
         return OrderCard(
           orderAddress: order.orderAddress,
           orderDate: order.orderTime,
-          orderID: 0,
+          orderID: order.orderID,
           orderList: order.orderList,
           totalPrice: order.totalPrice,
         );
@@ -40,8 +40,8 @@ class OrderFutureBuilder extends StatelessWidget {
     return FutureBuilder(
       future: getData(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text('Loading...');
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
         }
         return orderListViewBuilder(context, snapshot);
       },

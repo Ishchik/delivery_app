@@ -45,6 +45,7 @@ class RegistrationScreen extends StatelessWidget {
               height: 24.0,
             ),
             RoundedButton(
+              //TODO: add progress indicator
               color: Colors.lightBlueAccent,
               onPressed: () async {
                 try {

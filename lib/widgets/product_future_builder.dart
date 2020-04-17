@@ -40,8 +40,8 @@ class ProductFutureBuilder extends StatelessWidget {
     return FutureBuilder(
       future: getData(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text('Loading...');
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
         }
         return listViewBuilder(context, snapshot);
       },

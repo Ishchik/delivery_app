@@ -4,16 +4,11 @@ class FirestoreProduct {
   String imageUrl;
   int price;
 
-  FirestoreProduct(Map<String, dynamic> json) {
-    name = json['name'];
-    list = json['ingredients'];
-    imageUrl = json['image_url'];
-    try {
-      double priceData = json['price'];
-      price = priceData.toInt();
-    } catch (e) {
-      price = json['price'];
-    }
+  FirestoreProduct(Map<String, dynamic> map) {
+    name = map['name'];
+    list = map['ingredients'];
+    imageUrl = map['image_url'];
+    price = map['price'];
   }
 
   String listString() {
@@ -21,6 +16,6 @@ class FirestoreProduct {
     for (String item in list) {
       result += item + ', ';
     }
-    return result.substring(0, result.length - 1);
+    return result.substring(0, result.length - 2);
   }
 }

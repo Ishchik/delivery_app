@@ -3,7 +3,7 @@ import 'package:delivery_app/screens/orders_screen.dart';
 import 'package:delivery_app/screens/products_screen.dart';
 import 'package:provider/provider.dart';
 import 'profile_screen.dart';
-import 'package:delivery_app/models/order_data.dart';
+import 'package:delivery_app/models/new_order_data.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -37,11 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => OrderData(),
+      create: (context) => NewOrderData(),
       child: Scaffold(
-        body: SafeArea(
-          child: setScreen(_currentIndex),
-        ),
+        body: setScreen(_currentIndex),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           items: [

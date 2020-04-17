@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'order_button.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/order_data.dart';
-import 'package:delivery_app/models/order.dart';
+import 'package:delivery_app/models/new_order_data.dart';
+import 'package:delivery_app/models/new_order.dart';
 
 class ProductItem extends StatelessWidget {
   final String productTitle;
@@ -27,28 +26,15 @@ class ProductItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: FutureBuilder(
-                future: FirebaseStorage.instance
-                    .ref()
-                    .child(imageUrl)
-                    .getDownloadURL(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: Text('Loading...'),
-                    );
-                  }
-                  return ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        bottomLeft: Radius.circular(4)),
-                    child: Image(
-                      image: NetworkImage(snapshot.data.toString()),
-                      height: MediaQuery.of(context).size.height / 3,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(4),
+                    bottomLeft: Radius.circular(4)),
+                child: Image(
+                  image: NetworkImage(imageUrl),
+                  height: MediaQuery.of(context).size.height / 3,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Expanded(
@@ -98,8 +84,9 @@ class ProductItem extends StatelessWidget {
                       children: <Widget>[
                         OrderButton(
                           onPressed: () {
-                            Order _order = Order(productTitle, productPrice, 1);
-                            Provider.of<OrderData>(context, listen: false)
+                            NewOrder _order =
+                                NewOrder(productTitle, productPrice, 1);
+                            Provider.of<NewOrderData>(context, listen: false)
                                 .addToCart(_order);
                           },
                         ),
