@@ -17,24 +17,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          TopBar(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                    'Items in order: ${Provider.of<NewOrderData>(context).currentOrderItems}'),
-                Text(
-                    'Order price: ${Provider.of<NewOrderData>(context).currentOrderPrice}'),
-                FlatButton(
-                  child: Text('Checkout'),
-                  onPressed: () {
-                    Provider.of<NewOrderData>(context, listen: false)
-                        .checkOut();
-                  },
-                )
-              ],
-            ),
-          ),
+//          TopBar(
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//              children: <Widget>[
+//                Text(
+//                    'Items in order: ${Provider.of<NewOrderData>(context).currentOrderItems}'),
+//                Text(
+//                    'Order price: ${Provider.of<NewOrderData>(context).currentOrderPrice}'),
+//                FlatButton(
+//                  child: Text('Checkout'),
+//                  onPressed: () {
+//                    Provider.of<NewOrderData>(context, listen: false)
+//                        .checkOut();
+//                  },
+//                )
+//              ],
+//            ),
+//          ),
           Expanded(
             child: OrderFutureBuilder(),
           ),

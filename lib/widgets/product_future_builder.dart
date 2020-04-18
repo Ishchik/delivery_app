@@ -41,7 +41,8 @@ class ProductFutureBuilder extends StatelessWidget {
       future: getData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return CircularProgressIndicator();
+//          return CircularProgressIndicator();
+          return Text('Loading...');
         }
         return listViewBuilder(context, snapshot);
       },

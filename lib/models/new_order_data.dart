@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
 import 'new_order.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,6 +39,15 @@ class NewOrderData extends ChangeNotifier {
       totalPrice += order.price;
     }
     return totalPrice;
+  }
+
+  UnmodifiableListView<NewOrder> get orders {
+    return UnmodifiableListView(_orders);
+  }
+
+  void deleteOrderItem(NewOrder order) {
+    _orders.remove(order);
+    notifyListeners();
   }
 
   void checkOut() async {
