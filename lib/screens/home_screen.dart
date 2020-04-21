@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
           alignment: AlignmentDirectional.bottomEnd,
           children: [
             Icon(
-              Icons.receipt,
+              Icons.shopping_cart,
               size: 35,
             ),
             Provider.of<NewOrderData>(context).hasItems

@@ -2,19 +2,19 @@ import 'package:delivery_app/screens/admin_panel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery_app/widgets/common_widgets/big_rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'home_screen.dart';
 import 'package:delivery_app/constants.dart';
+import 'package:delivery_app/models/user_data.dart';
 
 class LoginScreen extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
-  final _firestore = Firestore.instance;
-  String email;
-  String password;
-  bool isAdmin;
 
   @override
   Widget build(BuildContext context) {
+    String email;
+    String password;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -55,26 +55,25 @@ class LoginScreen extends StatelessWidget {
                     password: password,
                   );
                   if (user != null) {
-                    final data = await _firestore
-                        .collection('user_info')
-                        .document(email)
-                        .get();
-                    isAdmin = data.data['isAdmin'];
+                    await Provider.of<UserData>(context, listen: false)
+                        .initUser();
 
-                    isAdmin == true
+                    Provider.of<UserData>(context, listen: false).isAdmin
                         ? Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AdminPanelScreen()),
+                              builder: (context) => AdminPanelScreen(),
+                            ),
                             (Route<dynamic> route) => false,
                           )
                         : Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeScreen()),
+                              builder: (context) => HomeScreen(),
+                            ),
                             (Route<dynamic> route) => false,
                           );
-                  }
+                  } //TODO: add alert dialog about incorrect input
                 } catch (e) {
                   print(e);
                 }

@@ -53,6 +53,7 @@ class NewOrderData extends ChangeNotifier {
   void checkOut(String address) async {
     try {
       DateTime now = DateTime.now();
+      //TODO: reimplement with server datestamp
       String time =
           '${now.day.toString()}-${now.month.toString()}-${now.year.toString()} ${now.hour.toString()}:${now.minute.toString()}:${now.second.toString()}';
 

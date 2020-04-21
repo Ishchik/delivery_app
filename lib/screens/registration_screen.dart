@@ -4,16 +4,14 @@ import 'home_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/big_rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:delivery_app/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:delivery_app/models/user_data.dart';
 
 class RegistrationScreen extends StatelessWidget {
-  final _auth = FirebaseAuth.instance;
-  final _firestore = Firestore.instance;
-
-  String email;
-  String password;
-
   @override
   Widget build(BuildContext context) {
+    String email;
+    String password;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -49,15 +47,14 @@ class RegistrationScreen extends StatelessWidget {
               color: Colors.lightBlueAccent,
               onPressed: () async {
                 try {
-                  final newUser = await _auth.createUserWithEmailAndPassword(
+                  final newUser = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
                     email: email,
                     password: password,
                   );
                   if (newUser != null) {
-                    await _firestore
-                        .collection('user_info')
-                        .document(email)
-                        .setData({'isAdmin': false, 'login': email});
+                    await Provider.of<UserData>(context, listen: false)
+                        .initNewUser(email);
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),
