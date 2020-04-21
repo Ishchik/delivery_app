@@ -4,7 +4,7 @@ import 'package:delivery_app/screens/products_screen.dart';
 import 'profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/new_order_data.dart';
-import 'package:delivery_app/widgets/checkout_cart.dart';
+import 'package:delivery_app/widgets/checkout/checkout_cart.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -66,7 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (!Provider.of<NewOrderData>(context).hasItems) {
+          if (!Provider
+              .of<NewOrderData>(context, listen: false)
+              .hasItems) {
             //TODO: alert dialog
           } else {
             showModalBottomSheet(

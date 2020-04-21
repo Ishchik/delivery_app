@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'package:delivery_app/widgets/rounded_button.dart';
+import 'package:delivery_app/widgets/common_widgets/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:delivery_app/constants.dart';
 

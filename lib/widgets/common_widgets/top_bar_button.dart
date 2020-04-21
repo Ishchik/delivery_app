@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ProductTabBarButton extends StatelessWidget {
+class TopBarButton extends StatelessWidget {
   final String title;
   final bool isActive;
   final Function onPressed;
 
-  ProductTabBarButton({this.title, this.onPressed, this.isActive});
+  TopBarButton({this.title, this.onPressed, this.isActive});
 
   @override
   Widget build(BuildContext context) {

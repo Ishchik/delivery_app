@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:delivery_app/widgets/product_item.dart';
-import 'package:delivery_app/widgets/product_tab_bar_button.dart';
-import 'package:delivery_app/widgets/top_bar.dart';
+import 'package:delivery_app/widgets/product/product_item.dart';
+import 'package:delivery_app/widgets/common_widgets/top_bar_button.dart';
+import 'package:delivery_app/widgets/common_widgets/top_bar.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   @override
@@ -9,66 +9,6 @@ class AdminPanelScreen extends StatefulWidget {
 }
 
 class _AdminPanelScreenState extends State<AdminPanelScreen> {
-  final List<SliverList> sliverList = [
-//    SliverList(
-//      delegate: SliverChildListDelegate([
-//        ProductItem(
-//          productTitle: 'soup1',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//        ProductItem(
-//          productTitle: 'soup2',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//        ProductItem(
-//          productTitle: 'soup3',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//      ]),
-//    ),
-//    SliverList(
-//      delegate: SliverChildListDelegate([
-//        ProductItem(
-//          productTitle: 'dish1',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//        ProductItem(
-//          productTitle: 'dish2',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//        ProductItem(
-//          productTitle: 'dish3',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//      ]),
-//    ),
-//    SliverList(
-//      delegate: SliverChildListDelegate([
-//        ProductItem(
-//          productTitle: 'drink1',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//        ProductItem(
-//          productTitle: 'drink2',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//        ProductItem(
-//          productTitle: 'drink3',
-//          productContent: 'lkhdbgksbdfkbgdlkfbgsldkfjs',
-//          productPrice: 200.00,
-//        ),
-//      ]),
-//    ),
-  ];
-
   int _currentIndex = 0;
 
   List<bool> buttonStates = [true, false, false];
@@ -106,21 +46,21 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  ProductTabBarButton(
+                  TopBarButton(
                     title: 'Soups',
                     onPressed: () {
                       setIndex(0);
                     },
                     isActive: buttonStates[0],
                   ),
-                  ProductTabBarButton(
+                  TopBarButton(
                     title: 'Main Dishes',
                     onPressed: () {
                       setIndex(1);
                     },
                     isActive: buttonStates[1],
                   ),
-                  ProductTabBarButton(
+                  TopBarButton(
                     title: 'Drinks',
                     onPressed: () {
                       setIndex(2);
@@ -131,12 +71,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               ),
             ),
             Expanded(
-              flex: 12,
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  sliverList.elementAt(_currentIndex),
-                ],
-              ),
+              child: Text('admin'),
             ),
           ],
         ),

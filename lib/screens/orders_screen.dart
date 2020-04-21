@@ -1,8 +1,5 @@
-import 'package:delivery_app/widgets/top_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:delivery_app/models/new_order_data.dart';
-import 'package:delivery_app/widgets/order_future_builder.dart';
+import 'package:delivery_app/widgets/order/order_future_builder.dart';
 
 class OrdersScreen extends StatefulWidget {
   @override

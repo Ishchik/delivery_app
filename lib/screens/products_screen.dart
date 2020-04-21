@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:delivery_app/widgets/product_tab_bar_button.dart';
-import 'package:delivery_app/widgets/top_bar.dart';
-import 'package:delivery_app/widgets/product_future_builder.dart';
+import 'package:delivery_app/widgets/common_widgets/top_bar_button.dart';
+import 'package:delivery_app/widgets/common_widgets/top_bar.dart';
+import 'package:delivery_app/widgets/product/product_future_builder.dart';
 
 class ProductsScreen extends StatefulWidget {
   @override
@@ -47,21 +47,21 @@ class _ProductsScreenState extends State<ProductsScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              ProductTabBarButton(
+              TopBarButton(
                 title: 'Soups',
                 onPressed: () {
                   setIndex(0);
                 },
                 isActive: buttonStates[0],
               ),
-              ProductTabBarButton(
+              TopBarButton(
                 title: 'Main Dishes',
                 onPressed: () {
                   setIndex(1);
                 },
                 isActive: buttonStates[1],
               ),
-              ProductTabBarButton(
+              TopBarButton(
                 title: 'Drinks',
                 onPressed: () {
                   setIndex(2);

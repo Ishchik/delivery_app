@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'screens/welcome_screen.dart';
 import 'models/new_order_data.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(DeliveryApp());
 
-class MyApp extends StatelessWidget {
+class DeliveryApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<NewOrderData>(

@@ -41,8 +41,9 @@ class OrderFutureBuilder extends StatelessWidget {
       future: getData(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-//          return CircularProgressIndicator();
-          return Text('Loading...');
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
         return orderListViewBuilder(context, snapshot);
       },

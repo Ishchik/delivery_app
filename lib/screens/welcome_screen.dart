@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:delivery_app/widgets/rounded_button.dart';
+import 'package:delivery_app/widgets/common_widgets/rounded_button.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
 
