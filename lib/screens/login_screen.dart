@@ -1,6 +1,6 @@
 import 'package:delivery_app/screens/admin_panel_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:delivery_app/widgets/common_widgets/rounded_button.dart';
+import 'package:delivery_app/widgets/common_widgets/big_rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_screen.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'product_order_button.dart';
+import '../common_widgets/card_button.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/new_order_data.dart';
 import 'package:delivery_app/models/new_order.dart';
@@ -82,13 +82,14 @@ class ProductItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        OrderButton(
+                        CardButton(
                           onPressed: () {
                             NewOrder _order =
                                 NewOrder(productTitle, productPrice, 1);
                             Provider.of<NewOrderData>(context, listen: false)
                                 .addToCart(_order);
                           },
+                          text: 'Add to cart',
                         ),
                       ],
                     ),
