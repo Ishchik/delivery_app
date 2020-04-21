@@ -40,15 +40,14 @@ class CheckoutCart extends StatelessWidget {
                 address = value;
               },
               decoration:
-              kTextFieldDecoration.copyWith(hintText: 'Enter address'),
+                  kTextFieldDecoration.copyWith(hintText: 'Enter address'),
             ),
             FlatButton(
               child: Text('Checkout'),
               onPressed: () {
                 try {
                   if (address.isNotEmpty) {
-                    if (Provider
-                        .of<NewOrderData>(context, listen: false)
+                    if (Provider.of<NewOrderData>(context, listen: false)
                         .hasItems) {
                       Provider.of<NewOrderData>(context, listen: false)
                           .checkOut(address);
