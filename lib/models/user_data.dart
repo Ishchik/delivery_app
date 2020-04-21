@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserData extends ChangeNotifier {
   String _userName;
   String _userEmail;
+  String _userDefaultAddress;
   bool _isAdmin;
 
   Future<void> initUser() async {
@@ -17,26 +18,43 @@ class UserData extends ChangeNotifier {
         await _store.collection('user_info').document(_userEmail).get();
     _userName = userSnap.data['name'];
     _isAdmin = userSnap.data['isAdmin'];
+    _userDefaultAddress = userSnap.data['address'];
   }
 
   Future<void> initNewUser(String email) async {
-    await Firestore.instance
-        .collection('user_info')
-        .document(email)
-        .setData({'isAdmin': false, 'name': email});
     _userName = email;
     _userEmail = email;
     _isAdmin = false;
+    _userDefaultAddress = null;
+
+    await Firestore.instance.collection('user_info').document(email).setData({
+      'isAdmin': _isAdmin,
+      'name': _userEmail,
+      'address': _userDefaultAddress
+    });
   }
 
   Future<void> changeName(String newName) async {
+    _userName = newName;
+
     await Firestore.instance
         .collection('user_info')
         .document(_userEmail)
         .updateData({
-      'name': newName,
+      'name': _userName,
     });
-    _userName = newName;
+    notifyListeners();
+  }
+
+  Future<void> changeAddress(String newAddress) async {
+    _userDefaultAddress = newAddress;
+
+    await Firestore.instance
+        .collection('user_info')
+        .document(_userEmail)
+        .updateData({
+      'address': _userDefaultAddress,
+    });
     notifyListeners();
   }
 
@@ -45,6 +63,7 @@ class UserData extends ChangeNotifier {
     _userName = null;
     _userEmail = null;
     _isAdmin = null;
+    _userDefaultAddress = null;
     notifyListeners();
   }
 
@@ -58,5 +77,9 @@ class UserData extends ChangeNotifier {
 
   bool get isAdmin {
     return _isAdmin;
+  }
+
+  String get userDefaultAddress {
+    return _userDefaultAddress;
   }
 }

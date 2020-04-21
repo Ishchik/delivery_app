@@ -86,6 +86,7 @@ class OrderCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black54),
                         borderRadius: BorderRadius.circular(5),
+                        color: Colors.blueGrey[50],
                       ),
                       height: MediaQuery.of(context).size.height / 6,
                       child: ListView.builder(
@@ -96,6 +97,7 @@ class OrderCard extends StatelessWidget {
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black54),
                                 borderRadius: BorderRadius.circular(5),
+                                color: Colors.white,
                               ),
                               child: ListTile(
                                 title: Text(

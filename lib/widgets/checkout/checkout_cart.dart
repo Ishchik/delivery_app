@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'checkout_list.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/new_order_data.dart';
+import 'package:delivery_app/models/user_data.dart';
 import 'package:delivery_app/constants.dart';
 import 'package:delivery_app/widgets/common_widgets/bottom_sheet_container.dart';
 
@@ -37,7 +38,23 @@ class CheckoutCart extends StatelessWidget {
             child: Text('Checkout'),
             onPressed: () {
               try {
-                if (address.isNotEmpty) {
+                if (address.isEmpty) {
+                  print('delivery address will be set to default');
+                  address = Provider.of<UserData>(context, listen: false)
+                      .userDefaultAddress;
+                  if (address != null) {
+                    if (Provider.of<NewOrderData>(context, listen: false)
+                        .hasItems) {
+                      Provider.of<NewOrderData>(context, listen: false)
+                          .checkOut(address);
+                      Navigator.pop(context);
+                    } else {
+                      print('seems like your cart is empty. try to fill it');
+                    }
+                  } else {
+                    print('set up your address ot enter it in the field');
+                  }
+                } else {
                   if (Provider.of<NewOrderData>(context, listen: false)
                       .hasItems) {
                     Provider.of<NewOrderData>(context, listen: false)
@@ -46,8 +63,6 @@ class CheckoutCart extends StatelessWidget {
                   } else {
                     print('seems like your cart is empty. try to fill it');
                   }
-                } else {
-                  print('enter address');
                 }
               } catch (e) {
                 print(e);

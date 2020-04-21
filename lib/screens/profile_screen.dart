@@ -3,7 +3,9 @@ import 'welcome_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/user_data.dart';
+import 'package:delivery_app/widgets/user/user_info_list_tile.dart';
 import 'package:delivery_app/widgets/user/change_password_card.dart';
+import 'package:delivery_app/widgets/user/change_address_card.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -14,43 +16,20 @@ class ProfileScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Name',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    Provider.of<UserData>(context).userName,
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
-                ],
-              ),
-              subtitle: Text('Tap to change the name'),
-              onTap: () async {
-                //TODO: implement "change name"
-
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (context) {
-                    return SingleChildScrollView(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: ChangePasswordCard(),
-                      ),
-                    );
-                  },
-                );
-              },
+            UserInfoListTile(
+              title: 'Name',
+              subtitle: 'Tap to change the name',
+              trailing: Provider.of<UserData>(context).userName,
+              child: ChangePasswordCard(),
+            ),
+            UserInfoListTile(
+              title: 'Default address',
+              subtitle: 'Tap to change the address',
+              trailing:
+                  Provider.of<UserData>(context).userDefaultAddress != null
+                      ? Provider.of<UserData>(context).userDefaultAddress
+                      : 'Not set up yet',
+              child: ChangeAddressCard(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
