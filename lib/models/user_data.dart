@@ -9,16 +9,18 @@ class UserData extends ChangeNotifier {
   bool _isAdmin;
 
   Future<void> initUser() async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    FirebaseUser _user = await _auth.currentUser();
+    FirebaseUser _user = await FirebaseAuth.instance.currentUser();
     _userEmail = _user.email;
 
     Firestore _store = Firestore.instance;
     var userSnap =
         await _store.collection('user_info').document(_userEmail).get();
-    _userName = userSnap.data['name'];
     _isAdmin = userSnap.data['isAdmin'];
-    _userDefaultAddress = userSnap.data['address'];
+    if (_isAdmin == false) {
+      _userName = userSnap.data['name'];
+      _userDefaultAddress = userSnap.data['address'];
+    }
+    notifyListeners();
   }
 
   Future<void> initNewUser(String email) async {
@@ -58,13 +60,16 @@ class UserData extends ChangeNotifier {
     notifyListeners();
   }
 
+//  Future<void> resetPassword() async {
+//    await FirebaseAuth.instance.sendPasswordResetEmail(email: _userEmail);
+//  }
+
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     _userName = null;
     _userEmail = null;
     _isAdmin = null;
     _userDefaultAddress = null;
-    notifyListeners();
   }
 
   String get userName {

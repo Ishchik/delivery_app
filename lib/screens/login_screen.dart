@@ -8,8 +8,6 @@ import 'package:delivery_app/constants.dart';
 import 'package:delivery_app/models/user_data.dart';
 
 class LoginScreen extends StatelessWidget {
-  final _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     String email;
@@ -50,14 +48,14 @@ class LoginScreen extends StatelessWidget {
               color: Colors.lightBlueAccent,
               onPressed: () async {
                 try {
-                  final user = await _auth.signInWithEmailAndPassword(
+                  final user =
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: email,
                     password: password,
                   );
                   if (user != null) {
                     await Provider.of<UserData>(context, listen: false)
                         .initUser();
-
                     Provider.of<UserData>(context, listen: false).isAdmin
                         ? Navigator.pushAndRemoveUntil(
                             context,

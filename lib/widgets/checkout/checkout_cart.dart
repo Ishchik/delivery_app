@@ -49,7 +49,7 @@ class CheckoutCart extends StatelessWidget {
                           .checkOut(address);
                       Navigator.pop(context);
                     } else {
-                      print('seems like your cart is empty. try to fill it');
+                      print('enter your address');
                     }
                   } else {
                     print('set up your address ot enter it in the field');

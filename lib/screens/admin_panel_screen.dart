@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:delivery_app/widgets/product/product_item.dart';
 import 'package:delivery_app/widgets/common_widgets/top_bar_button.dart';
 import 'package:delivery_app/widgets/common_widgets/top_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:delivery_app/models/user_data.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   @override
@@ -67,6 +68,12 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                     },
                     isActive: buttonStates[2],
                   ),
+                  FlatButton(
+                    child: Text('sign out'),
+                    onPressed: () {
+                      Provider.of<UserData>(context, listen: false).signOut();
+                    },
+                  )
                 ],
               ),
             ),
