@@ -1,3 +1,4 @@
+import 'package:delivery_app/models/new_order_data.dart';
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/card_button.dart';
@@ -43,6 +44,8 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 CardButton(
                   onPressed: () async {
+                    Provider.of<NewOrderData>(context, listen: false)
+                        .clearOrder();
                     await Provider.of<UserData>(context, listen: false)
                         .signOut();
                     Navigator.pushAndRemoveUntil(

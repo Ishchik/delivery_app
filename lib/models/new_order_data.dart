@@ -9,15 +9,18 @@ class NewOrderData extends ChangeNotifier {
   List<NewOrder> _orders = [];
 
   void addToCart(NewOrder order) {
-    var index =
-        _orders.indexWhere((item) => item.productName == order.productName);
-
-    if (index != -1) {
-      _orders[index].quantity++;
-      _orders[index].price += order.price;
-    } else {
-      _orders.add(order);
-    }
+//    var index =
+//        _orders.indexWhere((item) => item.productName == order.productName);
+//
+//    if (index != -1) {
+//      _orders[index].quantity++;
+//      _orders[index].price += order.price;
+//    } else {
+//      _orders.add(order);
+//    }
+    _orders.add(order);
+    _orders.sort((a, b) =>
+        a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
 
     notifyListeners();
   }
@@ -48,6 +51,10 @@ class NewOrderData extends ChangeNotifier {
   void deleteOrderItem(NewOrder order) {
     _orders.remove(order);
     notifyListeners();
+  }
+
+  void clearOrder() {
+    _orders.clear();
   }
 
   void checkOut(String address) async {
@@ -93,7 +100,7 @@ class NewOrderData extends ChangeNotifier {
         });
       });
 
-      _orders.clear();
+      clearOrder();
       notifyListeners();
     } catch (e) {
       print(e);
