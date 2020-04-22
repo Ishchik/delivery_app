@@ -34,12 +34,13 @@ class ProfileScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-//                CardButton(
-//                  onPressed: () {
-//                    //TODO: implement "reset password"
-//                  },
-//                  text: 'Reset password',
-//                ),
+                CardButton(
+                  onPressed: () async {
+                    await Provider.of<UserData>(context, listen: false)
+                        .resetPassword();
+                  },
+                  text: 'Reset password',
+                ),
                 CardButton(
                   onPressed: () async {
                     await Provider.of<UserData>(context, listen: false)

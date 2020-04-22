@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery_app/widgets/common_widgets/big_rounded_button.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
+
+import 'package:delivery_app/constants.dart';
+import 'package:delivery_app/widgets/common_widgets/bottom_sheet_container.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -45,8 +49,62 @@ class WelcomeScreen extends StatelessWidget {
               },
               text: 'Register',
             ),
+            FlatButton(
+              child: Text('forgot password'),
+              onPressed: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) {
+                    return SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: ResetPassword(),
+                      ),
+                    );
+                  },
+                );
+              },
+            )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ResetPassword extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    String email;
+    return BottomSheetContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          TextField(
+            autofocus: true,
+            keyboardType: TextInputType.emailAddress,
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              email = value;
+            },
+            decoration:
+                kTextFieldDecoration.copyWith(hintText: 'Enter address'),
+          ),
+          FlatButton(
+            child: Text('send email'),
+            onPressed: () async {
+              if (email != null) {
+                await FirebaseAuth.instance
+                    .sendPasswordResetEmail(email: email);
+                Navigator.pop(context);
+                print(
+                    'link to reset your password has been sent to your email');
+              }
+            },
+          )
+        ],
       ),
     );
   }

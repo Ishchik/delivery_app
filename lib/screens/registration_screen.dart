@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/big_rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:delivery_app/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/user_data.dart';
+
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class RegistrationScreen extends StatelessWidget {
   @override
@@ -46,19 +47,18 @@ class RegistrationScreen extends StatelessWidget {
               color: Colors.lightBlueAccent,
               onPressed: () async {
                 try {
-                  final newUser = await FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
+                  final newUser = await _auth.createUserWithEmailAndPassword(
                     email: email,
                     password: password,
                   );
+
                   if (newUser != null) {
+                    FirebaseUser _user = await _auth.currentUser();
+                    _user.sendEmailVerification();
+                    print('verification link has been sent to your email');
                     await Provider.of<UserData>(context, listen: false)
                         .initNewUser(email);
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                      (Route<dynamic> route) => false,
-                    );
+                    Navigator.pop(context);
                   }
                 } catch (e) {
                   print(e);

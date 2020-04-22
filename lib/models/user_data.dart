@@ -60,9 +60,10 @@ class UserData extends ChangeNotifier {
     notifyListeners();
   }
 
-//  Future<void> resetPassword() async {
-//    await FirebaseAuth.instance.sendPasswordResetEmail(email: _userEmail);
-//  }
+  Future<void> resetPassword() async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: _userEmail);
+    print('link to reset your password has been sent to your email');
+  }
 
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
