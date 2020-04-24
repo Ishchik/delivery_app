@@ -3,6 +3,8 @@ import 'package:delivery_app/widgets/common_widgets/top_bar_button.dart';
 import 'package:delivery_app/widgets/common_widgets/top_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/user_data.dart';
+import 'welcome_screen.dart';
+import 'package:delivery_app/widgets/product/product_list_builder.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   @override
@@ -10,20 +12,22 @@ class AdminPanelScreen extends StatefulWidget {
 }
 
 class _AdminPanelScreenState extends State<AdminPanelScreen> {
-  int _currentIndex = 0;
-
+  String currentProductTab = 'soups';
   List<bool> buttonStates = [true, false, false];
 
   void checkActive(currentIndex) {
     if (currentIndex == 0) {
+      currentProductTab = 'soups';
       buttonStates[0] = true;
       buttonStates[1] = false;
       buttonStates[2] = false;
     } else if (currentIndex == 1) {
+      currentProductTab = 'dishes';
       buttonStates[0] = false;
       buttonStates[1] = true;
       buttonStates[2] = false;
     } else if (currentIndex == 2) {
+      currentProductTab = 'drinks';
       buttonStates[0] = false;
       buttonStates[1] = false;
       buttonStates[2] = true;
@@ -32,7 +36,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
 
   void setIndex(index) {
     setState(() {
-      _currentIndex = index;
       checkActive(index);
     });
   }
@@ -72,13 +75,22 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                     child: Text('sign out'),
                     onPressed: () {
                       Provider.of<UserData>(context, listen: false).signOut();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => WelcomeScreen()),
+                        (Route<dynamic> route) => false,
+                      );
                     },
                   )
                 ],
               ),
             ),
             Expanded(
-              child: Text('admin'),
+              child: ProductListBuilder(
+                productTab: currentProductTab,
+                futureBuilderType: type.ADMIN,
+              ),
             ),
           ],
         ),

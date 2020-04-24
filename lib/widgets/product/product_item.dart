@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import '../common_widgets/card_button.dart';
+import 'package:delivery_app/models/firestore_product.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/new_order_data.dart';
 import 'package:delivery_app/models/new_order.dart';
+import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 
 class ProductItem extends StatelessWidget {
-  final String productTitle;
-  final String productContent;
-  final int productPrice;
-  final String imageUrl;
+  final FirestoreProduct product;
 
-  ProductItem(
-      {this.productTitle,
-      this.productContent,
-      this.productPrice,
-      this.imageUrl});
+  ProductItem({this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +25,7 @@ class ProductItem extends StatelessWidget {
                     topLeft: Radius.circular(4),
                     bottomLeft: Radius.circular(4)),
                 child: Image(
-                  image: NetworkImage(imageUrl),
+                  image: NetworkImage(product.imageUrl),
                   height: MediaQuery.of(context).size.height / 3,
                   fit: BoxFit.cover,
                 ),
@@ -48,14 +42,14 @@ class ProductItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Text(
-                          productTitle,
+                          product.name,
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          productContent,
+                          product.listString(),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -72,26 +66,19 @@ class ProductItem extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          '$productPrice USD',
+                          '${product.price} USD',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CardButton(
-                          onPressed: () {
-                            NewOrder _order =
-                                NewOrder(productTitle, productPrice, 1);
-                            Provider.of<NewOrderData>(context, listen: false)
-                                .addToCart(_order);
-                          },
-                          text: 'Add to cart',
-                        ),
-                      ],
+                    CardButton(
+                      onPressed: () {
+                        NewOrder _order = NewOrder(product);
+                        Provider.of<NewOrderData>(context, listen: false)
+                            .addToCart(_order);
+                      },
+                      text: 'Add to cart',
                     ),
                   ],
                 ),

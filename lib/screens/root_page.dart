@@ -5,6 +5,7 @@ import 'welcome_screen.dart';
 import 'admin_panel_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/user_data.dart';
+import 'package:delivery_app/models/firestore_product_data.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -31,6 +32,8 @@ class _RootPageState extends State<RootPage> {
       setState(() {
         if (user != null) {
           Provider.of<UserData>(context, listen: false).initUser();
+          Provider.of<FirestoreProductData>(context, listen: false)
+              .initProductList();
           authStatus =
               Provider.of<UserData>(context, listen: false).isAdmin == true
                   ? AuthStatus.LOGGED_IN_ADMIN
@@ -42,6 +45,7 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
+  //TODO: rework with LogoScreen;
   Widget buildWaitingScreen() {
     return Container(
       child: Center(

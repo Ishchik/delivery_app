@@ -13,7 +13,9 @@ class CardButton extends StatelessWidget {
       fillColor: Colors.red,
       splashColor: Colors.red[900],
       constraints: BoxConstraints(
-          minHeight: 35, minWidth: MediaQuery.of(context).size.width / 3),
+        minHeight: 35,
+        minWidth: MediaQuery.of(context).size.width / 3,
+      ),
       onPressed: onPressed,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Text(

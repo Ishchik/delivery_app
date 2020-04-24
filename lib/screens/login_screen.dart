@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'home_screen.dart';
 import 'package:delivery_app/constants.dart';
 import 'package:delivery_app/models/user_data.dart';
+import 'package:delivery_app/models/firestore_product_data.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -56,6 +57,9 @@ class LoginScreen extends StatelessWidget {
                   if (user != null) {
                     await Provider.of<UserData>(context, listen: false)
                         .initUser();
+                    await Provider.of<FirestoreProductData>(context,
+                            listen: false)
+                        .initProductList();
                     Provider.of<UserData>(context, listen: false).isAdmin
                         ? Navigator.pushAndRemoveUntil(
                             context,
