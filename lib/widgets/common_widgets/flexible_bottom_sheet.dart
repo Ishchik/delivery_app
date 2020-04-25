@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BottomSheetContainer extends StatelessWidget {
+class FlexibleBottomSheet extends StatelessWidget {
   final Widget child;
 
-  BottomSheetContainer({this.child});
+  FlexibleBottomSheet({this.child});
 
   @override
   Widget build(BuildContext context) {

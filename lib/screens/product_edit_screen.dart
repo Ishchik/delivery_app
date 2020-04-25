@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/models/firestore_product.dart';
+import 'package:delivery_app/widgets/common_widgets/info_list_tile.dart';
+import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
+import 'package:provider/provider.dart';
+import 'package:delivery_app/models/firestore_product_data.dart';
 
 class ProductEditScreen extends StatelessWidget {
   final FirestoreProduct product;
+  final String productTab;
 
-  ProductEditScreen({this.product});
+  ProductEditScreen({this.product, this.productTab});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: Text('Edit product'),
+        title: Text(product.name),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -58,60 +62,23 @@ class ProductEditScreen extends StatelessWidget {
               ],
             ),
           ),
-          Card(
-            child: ListTile(
-              title: Text(
-                product.name,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text('Name'),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  print('edited name');
-                },
-              ),
+          InfoListTile(
+            title: '${product.price} USD',
+            subtitle: 'Price',
+            child: SmallBottomSheetContainer(
+              hintText: 'Enter new price',
+              keyboardType: TextInputType.number,
+              onPressed: (int value) {
+                Provider.of<FirestoreProductData>(context, listen: false)
+                    .editProductPrice(product, productTab, value);
+                Navigator.pop(context);
+              },
             ),
           ),
-          Card(
-            child: ListTile(
-              title: Text(
-                '${product.price.toString()} USD',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text('Price'),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  print('edited price');
-                },
-              ),
-            ),
-          ),
-          Card(
-            child: ListTile(
-//                  isThreeLine: true,
-              title: Text(
-                product.listString(),
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: Text('Ingredients'),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  print('edited price');
-                },
-              ),
-            ),
+          InfoListTile(
+            title: product.listString(),
+            subtitle: 'Ingredients',
+            child: null,
           )
         ],
       ),

@@ -5,9 +5,8 @@ import 'welcome_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/user_data.dart';
-import 'package:delivery_app/widgets/user/user_info_list_tile.dart';
-import 'package:delivery_app/widgets/user/change_password_card.dart';
-import 'package:delivery_app/widgets/user/change_address_card.dart';
+import 'package:delivery_app/widgets/common_widgets/info_list_tile.dart';
+import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -18,20 +17,29 @@ class ProfileScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            UserInfoListTile(
-              title: 'Name',
-              subtitle: 'Tap to change the name',
-              trailing: Provider.of<UserData>(context).userName,
-              child: ChangePasswordCard(),
+            InfoListTile(
+              title: Provider.of<UserData>(context).userName,
+              subtitle: 'Name',
+              child: SmallBottomSheetContainer(
+                hintText: 'Enter new name',
+                onPressed: (value) async {
+                  Provider.of<UserData>(context, listen: false)
+                      .changeName(value);
+                },
+              ),
             ),
-            UserInfoListTile(
-              title: 'Default address',
-              subtitle: 'Tap to change the address',
-              trailing:
-                  Provider.of<UserData>(context).userDefaultAddress != null
-                      ? Provider.of<UserData>(context).userDefaultAddress
-                      : 'Not set up yet',
-              child: ChangeAddressCard(),
+            InfoListTile(
+              title: Provider.of<UserData>(context).userDefaultAddress != null
+                  ? Provider.of<UserData>(context).userDefaultAddress
+                  : 'Not set up yet',
+              subtitle: 'Address',
+              child: SmallBottomSheetContainer(
+                hintText: 'Enter new address',
+                onPressed: (value) async {
+                  Provider.of<UserData>(context, listen: false)
+                      .changeAddress(value);
+                },
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

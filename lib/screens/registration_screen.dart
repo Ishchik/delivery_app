@@ -13,61 +13,58 @@ class RegistrationScreen extends StatelessWidget {
     String email;
     String password;
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextField(
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                email = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter email'),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              obscureText: true,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                password = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter password'),
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            RoundedButton(
-              //TODO: add progress indicator
-              color: Colors.lightBlueAccent,
-              onPressed: () async {
-                try {
-                  final newUser = await _auth.createUserWithEmailAndPassword(
-                    email: email,
-                    password: password,
-                  );
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          TextField(
+            keyboardType: TextInputType.emailAddress,
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              email = value;
+            },
+            decoration: kTextFieldDecoration.copyWith(hintText: 'Enter email'),
+          ),
+          SizedBox(
+            height: 8.0,
+          ),
+          TextField(
+            obscureText: true,
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              password = value;
+            },
+            decoration:
+                kTextFieldDecoration.copyWith(hintText: 'Enter password'),
+          ),
+          SizedBox(
+            height: 24.0,
+          ),
+          RoundedButton(
+            //TODO: add progress indicator
+            color: Colors.lightBlueAccent,
+            onPressed: () async {
+              try {
+                final newUser = await _auth.createUserWithEmailAndPassword(
+                  email: email,
+                  password: password,
+                );
 
-                  if (newUser != null) {
-                    FirebaseUser _user = await _auth.currentUser();
-                    _user.sendEmailVerification();
-                    print('verification link has been sent to your email');
-                    await Provider.of<UserData>(context, listen: false)
-                        .initNewUser(email);
-                    Navigator.pop(context);
-                  }
-                } catch (e) {
-                  print(e);
+                if (newUser != null) {
+                  FirebaseUser _user = await _auth.currentUser();
+                  _user.sendEmailVerification();
+                  print('verification link has been sent to your email');
+                  await Provider.of<UserData>(context, listen: false)
+                      .initNewUser(email);
+                  Navigator.pop(context);
                 }
-              },
-              text: 'Register',
-            ),
-          ],
-        ),
+              } catch (e) {
+                print(e);
+              }
+            },
+            text: 'Register',
+          ),
+        ],
       ),
     );
   }

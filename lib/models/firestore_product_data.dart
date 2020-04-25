@@ -66,6 +66,20 @@ class FirestoreProductData extends ChangeNotifier {
     }
   }
 
+  Future<void> editProductPrice(
+      FirestoreProduct product, String tabName, int newPrice) async {
+    var _store = Firestore.instance;
+    await _store.runTransaction((transaction) async {
+      var docRef = _store
+          .collection('product_info')
+          .document('${tabName}_info')
+          .collection(tabName)
+          .document(product.name);
+      await transaction.update(docRef, {'price': newPrice});
+      product.price = newPrice;
+    });
+  }
+
   void clearProducts() {
     _soupList.clear();
     _dishList.clear();

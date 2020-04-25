@@ -4,14 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:delivery_app/models/new_order_data.dart';
 import 'package:delivery_app/models/user_data.dart';
 import 'package:delivery_app/constants.dart';
-import 'package:delivery_app/widgets/common_widgets/bottom_sheet_container.dart';
+import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
 
 class CheckoutCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String address = '';
-
-    return BottomSheetContainer(
+    return FlexibleBottomSheet(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[

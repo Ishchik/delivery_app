@@ -25,6 +25,9 @@ class DeliveryApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Delivery App',
         home: RootPage(),
+        theme: ThemeData(
+          primaryColor: Colors.white,
+        ),
         debugShowCheckedModeBanner: false,
       ),
     );
