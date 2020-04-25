@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/models/firestore_product.dart';
-import 'package:provider/provider.dart';
-import 'package:delivery_app/models/new_order_data.dart';
-import 'package:delivery_app/models/new_order.dart';
-import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 
 class ProductItem extends StatelessWidget {
   final FirestoreProduct product;
+  final Widget button;
 
-  ProductItem({this.product});
+  ProductItem({this.product, this.button});
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +69,7 @@ class ProductItem extends StatelessWidget {
                         ),
                       ],
                     ),
-                    CardButton(
-                      onPressed: () {
-                        NewOrder _order = NewOrder(product);
-                        Provider.of<NewOrderData>(context, listen: false)
-                            .addToCart(_order);
-                      },
-                      text: 'Add to cart',
-                    ),
+                    button,
                   ],
                 ),
               ),

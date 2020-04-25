@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'product_item.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:delivery_app/models/firestore_product.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/firestore_product_data.dart';
+import 'package:delivery_app/models/new_order_data.dart';
+import 'package:delivery_app/models/new_order.dart';
+import 'package:delivery_app/widgets/common_widgets/card_button.dart';
+import 'package:delivery_app/screens/product_edit_screen.dart';
+
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:delivery_app/models/firestore_product.dart';
 
 enum type { USER, ADMIN }
 
@@ -67,12 +72,30 @@ class ProductListBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) {
-        return futureBuilderType == type.USER
-            ? ProductItem(
-                product: Provider.of<FirestoreProductData>(context)
-                    .getList(productTab)[index],
-              )
-            : Text('admin');
+        var product = Provider.of<FirestoreProductData>(context)
+            .getList(productTab)[index];
+        return ProductItem(
+          product: product,
+          button: futureBuilderType == type.USER
+              ? CardButton(
+                  onPressed: () {
+                    NewOrder _order = NewOrder(product);
+                    Provider.of<NewOrderData>(context, listen: false)
+                        .addToCart(_order);
+                  },
+                  text: 'Add to cart',
+                )
+              : CardButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProductEditScreen(product: product)));
+                  },
+                  text: 'Edit',
+                ),
+        );
       },
       itemCount:
           Provider.of<FirestoreProductData>(context).listLength(productTab),

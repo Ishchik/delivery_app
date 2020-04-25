@@ -1,3 +1,4 @@
+import 'package:delivery_app/models/firestore_product_data.dart';
 import 'package:delivery_app/models/new_order_data.dart';
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
@@ -46,6 +47,8 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () async {
                     Provider.of<NewOrderData>(context, listen: false)
                         .clearOrder();
+                    Provider.of<FirestoreProductData>(context, listen: false)
+                        .clearProducts();
                     await Provider.of<UserData>(context, listen: false)
                         .signOut();
                     Navigator.pushAndRemoveUntil(

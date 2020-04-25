@@ -49,8 +49,6 @@ class FirestoreProductData extends ChangeNotifier {
       case 'drinks':
         return UnmodifiableListView(_drinkList);
         break;
-      default:
-        return UnmodifiableListView(_soupList);
     }
   }
 
@@ -66,5 +64,11 @@ class FirestoreProductData extends ChangeNotifier {
         return _drinkList.length;
         break;
     }
+  }
+
+  void clearProducts() {
+    _soupList.clear();
+    _dishList.clear();
+    _drinkList.clear();
   }
 }

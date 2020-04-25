@@ -20,7 +20,7 @@ class UserData extends ChangeNotifier {
       _userName = userSnap.data['name'];
       _userDefaultAddress = userSnap.data['address'];
     }
-    notifyListeners();
+//    notifyListeners();
   }
 
   Future<void> initNewUser(String email) async {

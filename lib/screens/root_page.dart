@@ -27,22 +27,7 @@ class _RootPageState extends State<RootPage> {
   @override
   void initState() {
     super.initState();
-
-    _auth.currentUser().then((user) {
-      setState(() {
-        if (user != null) {
-          Provider.of<UserData>(context, listen: false).initUser();
-          Provider.of<FirestoreProductData>(context, listen: false)
-              .initProductList();
-          authStatus =
-              Provider.of<UserData>(context, listen: false).isAdmin == true
-                  ? AuthStatus.LOGGED_IN_ADMIN
-                  : AuthStatus.LOGGED_IN_USER;
-        } else {
-          authStatus = AuthStatus.NOT_LOGGED_IN;
-        }
-      });
-    });
+    checkUser();
   }
 
   //TODO: rework with LogoScreen;
@@ -52,6 +37,26 @@ class _RootPageState extends State<RootPage> {
         child: CircularProgressIndicator(),
       ),
     );
+  }
+
+  void checkUser() async {
+    var _user = await _auth.currentUser();
+    if (_user != null) {
+      await Provider.of<FirestoreProductData>(context, listen: false)
+          .initProductList();
+      await Provider.of<UserData>(context, listen: false).initUser();
+
+      setState(() {
+        authStatus =
+            Provider.of<UserData>(context, listen: false).isAdmin == true
+                ? AuthStatus.LOGGED_IN_ADMIN
+                : AuthStatus.LOGGED_IN_USER;
+      });
+    } else {
+      setState(() {
+        authStatus = AuthStatus.NOT_LOGGED_IN;
+      });
+    }
   }
 
   @override
