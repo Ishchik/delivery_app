@@ -10,7 +10,7 @@ class SmallBottomSheetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var newValue;
+    String newValue;
     return Container(
       color: Color(0xFF757575),
       child: Container(
@@ -30,9 +30,6 @@ class SmallBottomSheetContainer extends StatelessWidget {
               autofocus: true,
               textAlign: TextAlign.center,
               onChanged: (value) {
-                if (keyboardType == TextInputType.number) {
-                  newValue = int.parse(value);
-                }
                 newValue = value;
               },
               decoration: kTextFieldDecoration.copyWith(hintText: hintText),
@@ -40,7 +37,11 @@ class SmallBottomSheetContainer extends StatelessWidget {
             FlatButton(
               child: Text('Done'),
               onPressed: () {
-                onPressed(newValue);
+                if (keyboardType == TextInputType.number) {
+                  onPressed(int.parse(newValue));
+                } else {
+                  onPressed(newValue);
+                }
                 Navigator.pop(context);
               },
             )

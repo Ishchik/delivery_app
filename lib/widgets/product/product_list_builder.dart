@@ -39,7 +39,7 @@ class ProductListBuilder extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => ProductEditScreen(
                           product: product,
-                          productTab: productTab,
+                          tabName: productTab,
                         ),
                       ),
                     );

@@ -11,6 +11,7 @@ class InfoListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        isThreeLine: false,
         title: Text(
           title,
           style: TextStyle(
@@ -18,7 +19,8 @@ class InfoListTile extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text(subtitle),
+        subtitle:
+            subtitle != null ? Text(subtitle) : Text('Tap on icon to edit'),
         trailing: IconButton(
           icon: Icon(Icons.edit),
           onPressed: () {
