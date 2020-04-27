@@ -1,6 +1,6 @@
 import 'dart:collection';
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'firestore_product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -142,6 +142,73 @@ class FirestoreProductData extends ChangeNotifier {
           .document(product.name);
       await transaction.update(docRef, {'ingredients': product.list});
     });
+    notifyListeners();
+  }
+
+  Future<FirestoreProduct> createProduct(String name, String group) async {
+    Map<String, dynamic> map = {
+      'name': name,
+      'ingredients': [],
+      'image_url': '',
+      'price': 0
+    };
+    FirestoreProduct product = FirestoreProduct(map);
+    switch (group) {
+      case 'soups':
+        _soupList.add(product);
+        break;
+      case 'dishes':
+        _dishList.add(product);
+        break;
+      case 'drinks':
+        _drinkList.add(product);
+        break;
+    }
+
+    var _store = Firestore.instance;
+    await _store.runTransaction((transaction) async {
+      var docRef = _store
+          .collection('product_info')
+          .document('${group}_info')
+          .collection(group)
+          .document(product.name);
+      await transaction.set(docRef, map);
+    });
+
+    return product;
+  }
+
+  Future<void> deleteProduct(FirestoreProduct product, String tabName) async {
+    var _store = Firestore.instance;
+    await _store.runTransaction((transaction) async {
+      var docRef = _store
+          .collection('product_info')
+          .document('${tabName}_info')
+          .collection(tabName)
+          .document(product.name);
+      await transaction.delete(docRef);
+
+      var _storageRef = FirebaseStorage.instance
+          .ref()
+          .child('images/$tabName/${product.name}');
+
+      await _storageRef.delete();
+
+      switch (tabName) {
+        case 'soups':
+          _soupList.remove(product);
+          break;
+        case 'dishes':
+          _dishList.remove(product);
+          break;
+        case 'drinks':
+          _drinkList.remove(product);
+          break;
+      }
+
+      print('deleted');
+    });
+
     notifyListeners();
   }
 

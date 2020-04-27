@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:delivery_app/models/user_data.dart';
 import 'package:delivery_app/models/firestore_product_data.dart';
 import 'package:delivery_app/screens/welcome_screen.dart';
+import 'package:delivery_app/widgets/temp_bottom_sheet.dart';
 
 class AdminPanelScreen extends StatelessWidget {
   @override
@@ -58,6 +59,26 @@ class AdminPanelScreen extends StatelessWidget {
               futureBuilderType: type.ADMIN,
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.add,
+          ),
+          onPressed: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (context) {
+                return SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Temp(),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
     );

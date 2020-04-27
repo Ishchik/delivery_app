@@ -13,6 +13,9 @@ class FirestoreProduct {
 
   String listString() {
     String result = '';
+    if (list.length < 1) {
+      return result;
+    }
     for (String item in list) {
       result += item + ', ';
     }

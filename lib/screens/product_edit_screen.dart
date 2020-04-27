@@ -24,7 +24,9 @@ class ProductEditScreen extends StatelessWidget {
               Icons.delete,
             ),
             onPressed: () {
-              print('deleted item');
+              Provider.of<FirestoreProductData>(context, listen: false)
+                  .deleteProduct(product, tabName);
+              Navigator.pop(context);
             },
           )
         ],
