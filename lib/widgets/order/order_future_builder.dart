@@ -12,6 +12,7 @@ class OrderFutureBuilder extends StatelessWidget {
         .collection('order_info')
         .document('orders')
         .collection(_user.email)
+        .orderBy('order_id')
         .getDocuments();
 
     return _querySnapshot.documents.map((snap) => snap.data).toList();

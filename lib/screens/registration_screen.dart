@@ -19,19 +19,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _password;
   bool _processing = false;
 
-  void startProcessing() {
+  void _startProcessing() {
     setState(() {
       _processing = true;
     });
   }
 
-  void stopProcessing() {
+  void _stopProcessing() {
     setState(() {
       _processing = false;
     });
   }
 
-  String validateUsername(String email) {
+  String _validateUsername(String email) {
     if (email.isEmpty) {
       return 'Email can\'t be empty';
     }
@@ -43,7 +43,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return null;
   }
 
-  String validatePassword(String password) {
+  String _validatePassword(String password) {
     if (password.isEmpty) {
       return 'Password can\'t be empty';
     }
@@ -59,11 +59,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return null;
   }
 
-  void submit(BuildContext context) async {
+  void _submit(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       try {
-        startProcessing();
+        _startProcessing();
         FocusScope.of(context).unfocus();
 
         final newUser = await _auth.createUserWithEmailAndPassword(
@@ -77,11 +77,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           print('verification link has been sent to your email');
           await Provider.of<UserData>(context, listen: false)
               .initNewUser(_email);
-          stopProcessing();
+          _stopProcessing();
           Navigator.pop(context);
         }
       } catch (e) {
-        stopProcessing();
+        _stopProcessing();
         print(e);
       }
     }
@@ -102,20 +102,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 TextFormField(
                   decoration: InputDecoration(
                       hintText: 'Enter email', labelText: 'Email'),
-                  validator: validateUsername,
+                  validator: _validateUsername,
                   onSaved: (value) => _email = value,
                 ),
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
                       hintText: 'Enter password', labelText: 'Password'),
-                  validator: validatePassword,
+                  validator: _validatePassword,
                   onSaved: (value) => _password = value,
                 ),
                 BigButton(
                   textColor: Colors.white,
                   buttonColor: Color(0xFFFFC107),
-                  onPressed: () => submit(context),
+                  onPressed: () => _submit(context),
                   text: 'Register',
                 )
               ],

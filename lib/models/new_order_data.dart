@@ -61,7 +61,7 @@ class NewOrderData extends ChangeNotifier {
     try {
       DateTime now = DateTime.now();
       String time =
-          '${now.day.toString()}-${now.month.toString()}-${now.year.toString()} ${now.hour.toString()}:${now.minute.toString()}:${now.second.toString()}';
+          '${now.day.toString()}-${now.month.toString()}-${now.year.toString()} ${now.hour.toString()}:${now.minute.toString()}}';
 
       var _auth = FirebaseAuth.instance;
       var _user = await _auth.currentUser();

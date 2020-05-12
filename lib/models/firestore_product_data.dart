@@ -53,6 +53,8 @@ class FirestoreProductData extends ChangeNotifier {
         return UnmodifiableListView(_drinkList);
         break;
     }
+
+    return null;
   }
 
   int listLength(String type) {
@@ -67,6 +69,8 @@ class FirestoreProductData extends ChangeNotifier {
         return _drinkList.length;
         break;
     }
+
+    return null;
   }
 
   FirestoreProduct getProductData(FirestoreProduct product) {

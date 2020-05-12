@@ -20,19 +20,19 @@ class _LoginScreenState extends State<LoginScreen> {
   String _password;
   bool _processing = false;
 
-  void startProcessing() {
+  void _startProcessing() {
     setState(() {
       _processing = true;
     });
   }
 
-  void stopProcessing() {
+  void _stopProcessing() {
     setState(() {
       _processing = false;
     });
   }
 
-  String validateUsername(String email) {
+  String _validateUsername(String email) {
     if (email.isEmpty) {
       return 'Email can\'t be empty';
     }
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  String validatePassword(String password) {
+  String _validatePassword(String password) {
     if (password.isEmpty) {
       return 'Password can\'t be empty';
     }
@@ -60,11 +60,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  void submit(BuildContext context) async {
+  void _submit(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       try {
-        startProcessing();
+        _startProcessing();
         FocusScope.of(context).unfocus();
         final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email,
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await Provider.of<UserData>(context, listen: false).initUser();
           await Provider.of<FirestoreProductData>(context, listen: false)
               .initProductList();
-          stopProcessing();
+          _stopProcessing();
           Provider.of<UserData>(context, listen: false).isAdmin
               ? Navigator.pushAndRemoveUntil(
                   context,
@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
         }
       } catch (e) {
-        stopProcessing();
+        _stopProcessing();
         print(e);
       }
     }
@@ -113,20 +113,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   decoration: InputDecoration(
                       hintText: 'Enter email', labelText: 'Email'),
-                  validator: validateUsername,
+                  validator: _validateUsername,
                   onSaved: (value) => _email = value,
                 ),
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
                       hintText: 'Enter password', labelText: 'Password'),
-                  validator: validatePassword,
+                  validator: _validatePassword,
                   onSaved: (value) => _password = value,
                 ),
                 BigButton(
                   textColor: Colors.white,
                   buttonColor: Color(0xFFFFC107),
-                  onPressed: () => submit(context),
+                  onPressed: () => _submit(context),
                   text: 'Log in',
                 )
               ],
