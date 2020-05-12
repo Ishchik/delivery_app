@@ -65,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                       (Route<dynamic> route) => false,
                     );
                   },
-                  text: 'Sign out',
+                  text: 'Log out',
                 ),
               ],
             )

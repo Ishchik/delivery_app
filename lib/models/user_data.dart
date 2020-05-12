@@ -24,16 +24,10 @@ class UserData extends ChangeNotifier {
   }
 
   Future<void> initNewUser(String email) async {
-    _userName = email;
-    _userEmail = email;
-    _isAdmin = false;
-    _userDefaultAddress = null;
-
-    await Firestore.instance.collection('user_info').document(email).setData({
-      'isAdmin': _isAdmin,
-      'name': _userEmail,
-      'address': _userDefaultAddress
-    });
+    await Firestore.instance
+        .collection('user_info')
+        .document(email)
+        .setData({'isAdmin': false, 'name': email, 'address': null});
   }
 
   Future<void> changeName(String newName) async {

@@ -67,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (!Provider.of<NewOrderData>(context, listen: false).hasItems) {
-            //TODO: alert dialog
           } else {
             showModalBottomSheet(
               isScrollControlled: true,

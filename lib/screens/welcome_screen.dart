@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:delivery_app/widgets/common_widgets/big_rounded_button.dart';
+import 'package:delivery_app/widgets/common_widgets/big_button.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
@@ -15,18 +15,22 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
-              'DELIVERY APP',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Hero(
+              tag: 'AppName',
+              child: Text(
+                'DELIVERY APP',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SizedBox(
               height: 48.0,
             ),
-            RoundedButton(
-              color: Colors.lightBlueAccent,
+            BigButton(
+              buttonColor: Color(0xFFFFD659),
+              textColor: Colors.black,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -35,10 +39,11 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 );
               },
-              text: 'Log In',
+              text: 'Log in',
             ),
-            RoundedButton(
-              color: Colors.blueAccent,
+            BigButton(
+              buttonColor: Color(0xFFFFC107),
+              textColor: Colors.white,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -48,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
               text: 'Register',
             ),
             FlatButton(
-              child: Text('forgot password'),
+              child: Text('Forgot password?'),
               onPressed: () {
                 showModalBottomSheet(
                   isScrollControlled: true,

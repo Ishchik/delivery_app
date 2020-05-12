@@ -14,8 +14,6 @@ enum AuthStatus {
   LOGGED_IN_ADMIN,
 }
 
-FirebaseAuth _auth = FirebaseAuth.instance;
-
 class RootPage extends StatefulWidget {
   @override
   _RootPageState createState() => _RootPageState();
@@ -23,6 +21,7 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -30,11 +29,35 @@ class _RootPageState extends State<RootPage> {
     checkUser();
   }
 
-  //TODO: rework with LogoScreen;
   Widget buildWaitingScreen() {
-    return Container(
-      child: Center(
-        child: CircularProgressIndicator(),
+    return Scaffold(
+      body: Center(
+        child: Container(
+          height: 200.0,
+          width: 250.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Hero(
+                tag: 'AppName',
+                child: Text(
+                  'DELIVERY APP',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                '...delivering happiness',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
