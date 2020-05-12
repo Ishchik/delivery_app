@@ -18,7 +18,7 @@ class CheckoutList extends StatelessWidget {
               },
             );
           },
-          itemCount: orderData.currentOrderItems,
+          itemCount: orderData.orderListLength,
         );
       },
     );

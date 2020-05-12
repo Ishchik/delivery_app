@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     backgroundColor: Colors.red,
                     radius: 10,
                     child: Text(
-                      '${Provider.of<NewOrderData>(context).currentOrderItems}',
+                      '${Provider.of<NewOrderData>(context).orderedItems}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                       textAlign: TextAlign.justify,

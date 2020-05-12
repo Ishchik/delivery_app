@@ -9,18 +9,17 @@ class NewOrderData extends ChangeNotifier {
   List<NewOrder> _orders = [];
 
   void addToCart(NewOrder order) {
-//    var index =
-//        _orders.indexWhere((item) => item.productName == order.productName);
-//
-//    if (index != -1) {
-//      _orders[index].quantity++;
-//      _orders[index].price += order.price;
-//    } else {
-//      _orders.add(order);
-//    }
-    _orders.add(order);
-    _orders.sort((a, b) =>
-        a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
+    var index =
+        _orders.indexWhere((item) => item.productName == order.productName);
+
+    if (index != -1) {
+      _orders[index].quantity++;
+      _orders[index].price += order.price;
+    } else {
+      _orders.add(order);
+//      _orders.sort((a, b) =>
+//          a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
+    }
 
     notifyListeners();
   }
@@ -32,11 +31,19 @@ class NewOrderData extends ChangeNotifier {
     return false;
   }
 
-  int get currentOrderItems {
+  int get orderedItems {
+    int counter = 0;
+    for (NewOrder order in _orders) {
+      counter += order.quantity;
+    }
+    return counter;
+  }
+
+  int get orderListLength {
     return _orders.length;
   }
 
-  int get currentOrderPrice {
+  int get totalPrice {
     int totalPrice = 0;
     for (NewOrder order in _orders) {
       totalPrice += order.price;
@@ -61,7 +68,7 @@ class NewOrderData extends ChangeNotifier {
     try {
       DateTime now = DateTime.now();
       String time =
-          '${now.day.toString()}-${now.month.toString()}-${now.year.toString()} ${now.hour.toString()}:${now.minute.toString()}}';
+          '${now.day.toString()}-${now.month.toString()}-${now.year.toString()} ${now.hour.toString()}:${now.minute.toString()}';
 
       var _auth = FirebaseAuth.instance;
       var _user = await _auth.currentUser();
@@ -94,7 +101,7 @@ class NewOrderData extends ChangeNotifier {
           'order_id': id,
           'order_time': time,
           'order_address': address,
-          'total_price': currentOrderPrice,
+          'total_price': totalPrice,
           'list': list,
         });
       });

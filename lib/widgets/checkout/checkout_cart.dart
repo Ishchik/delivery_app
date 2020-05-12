@@ -22,8 +22,7 @@ class CheckoutCart extends StatelessWidget {
             height: 200,
             child: CheckoutList(),
           ),
-          Text(
-              'Total price ${Provider.of<NewOrderData>(context).currentOrderPrice}'),
+          Text('Total price ${Provider.of<NewOrderData>(context).totalPrice}'),
           TextField(
             keyboardType: TextInputType.emailAddress,
             textAlign: TextAlign.center,
