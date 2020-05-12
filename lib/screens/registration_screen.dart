@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/widgets/common_widgets/big_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:delivery_app/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/models/user_data.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -14,87 +13,116 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  String email;
-  String password;
-  bool _loading = false;
+  final _formKey = GlobalKey<FormState>();
 
-  void startLoading() {
+  String _email;
+  String _password;
+  bool _processing = false;
+
+  void startProcessing() {
     setState(() {
-      _loading = true;
+      _processing = true;
     });
   }
 
-  void stopLoading() {
+  void stopProcessing() {
     setState(() {
-      _loading = false;
+      _processing = false;
     });
+  }
+
+  String validateUsername(String email) {
+    if (email.isEmpty) {
+      return 'Email can\'t be empty';
+    }
+
+    if (!email.contains('@') && !email.contains('.')) {
+      return 'Incorrect email input';
+    }
+
+    return null;
+  }
+
+  String validatePassword(String password) {
+    if (password.isEmpty) {
+      return 'Password can\'t be empty';
+    }
+
+    if (password.length < 6) {
+      return 'Password must contain atleast 6 characters';
+    }
+
+    if (password.contains('/')) {
+      return 'Password can\'t contain characters ...';
+    }
+
+    return null;
+  }
+
+  void submit(BuildContext context) async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      try {
+        startProcessing();
+        FocusScope.of(context).unfocus();
+
+        final newUser = await _auth.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+
+        if (newUser != null) {
+          FirebaseUser _user = await _auth.currentUser();
+          _user.sendEmailVerification();
+          print('verification link has been sent to your email');
+          await Provider.of<UserData>(context, listen: false)
+              .initNewUser(_email);
+          stopProcessing();
+          Navigator.pop(context);
+        }
+      } catch (e) {
+        stopProcessing();
+        print(e);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ModalProgressHUD(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextField(
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                email = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter email'),
+        child: Padding(
+          padding: EdgeInsets.all(24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(
+                      hintText: 'Enter email', labelText: 'Email'),
+                  validator: validateUsername,
+                  onSaved: (value) => _email = value,
+                ),
+                TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      hintText: 'Enter password', labelText: 'Password'),
+                  validator: validatePassword,
+                  onSaved: (value) => _password = value,
+                ),
+                BigButton(
+                  textColor: Colors.white,
+                  buttonColor: Color(0xFFFFC107),
+                  onPressed: () => submit(context),
+                  text: 'Register',
+                )
+              ],
             ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              obscureText: true,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                password = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter password'),
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            BigButton(
-              buttonColor: Color(0xFFFFC107),
-              textColor: Colors.white,
-              onPressed: () async {
-                try {
-                  startLoading();
-
-                  final newUser = await _auth.createUserWithEmailAndPassword(
-                    email: email,
-                    password: password,
-                  );
-
-                  if (newUser != null) {
-                    FirebaseUser _user = await _auth.currentUser();
-                    _user.sendEmailVerification();
-                    print('verification link has been sent to your email');
-                    await Provider.of<UserData>(context, listen: false)
-                        .initNewUser(email);
-                    stopLoading();
-
-                    Navigator.pop(context);
-                  }
-                } catch (e) {
-                  stopLoading();
-
-                  print(e);
-                }
-              },
-              text: 'Register',
-            ),
-          ],
+          ),
         ),
-        inAsyncCall: _loading,
+        inAsyncCall: _processing,
       ),
     );
   }

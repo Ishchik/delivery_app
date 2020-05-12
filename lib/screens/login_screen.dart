@@ -4,7 +4,6 @@ import 'package:delivery_app/widgets/common_widgets/big_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'home_screen.dart';
-import 'package:delivery_app/constants.dart';
 import 'package:delivery_app/models/user_data.dart';
 import 'package:delivery_app/models/firestore_product_data.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -15,101 +14,126 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String email;
-  String password;
-  bool _loading = false;
+  final _formKey = GlobalKey<FormState>();
 
-  void startLoading() {
+  String _email;
+  String _password;
+  bool _processing = false;
+
+  void startProcessing() {
     setState(() {
-      _loading = true;
+      _processing = true;
     });
   }
 
-  void stopLoading() {
+  void stopProcessing() {
     setState(() {
-      _loading = false;
+      _processing = false;
     });
+  }
+
+  String validateUsername(String email) {
+    if (email.isEmpty) {
+      return 'Email can\'t be empty';
+    }
+
+    if (!email.contains('@') && !email.contains('.')) {
+      return 'Incorrect email input';
+    }
+
+    return null;
+  }
+
+  String validatePassword(String password) {
+    if (password.isEmpty) {
+      return 'Password can\'t be empty';
+    }
+
+    if (password.length < 6) {
+      return 'Password must contain atleast 6 characters';
+    }
+
+    if (password.contains('/')) {
+      return 'Password can\'t contain characters ...';
+    }
+
+    return null;
+  }
+
+  void submit(BuildContext context) async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      try {
+        startProcessing();
+        FocusScope.of(context).unfocus();
+        final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+        if (user != null) {
+          await Provider.of<UserData>(context, listen: false).initUser();
+          await Provider.of<FirestoreProductData>(context, listen: false)
+              .initProductList();
+          stopProcessing();
+          Provider.of<UserData>(context, listen: false).isAdmin
+              ? Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AdminPanelScreen(),
+                  ),
+                  (Route<dynamic> route) => false,
+                )
+              : Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+        }
+      } catch (e) {
+        stopProcessing();
+        print(e);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ModalProgressHUD(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextField(
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                email = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter email'),
+        child: Padding(
+          padding: EdgeInsets.all(24.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(
+                      hintText: 'Enter email', labelText: 'Email'),
+                  validator: validateUsername,
+                  onSaved: (value) => _email = value,
+                ),
+                TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      hintText: 'Enter password', labelText: 'Password'),
+                  validator: validatePassword,
+                  onSaved: (value) => _password = value,
+                ),
+                BigButton(
+                  textColor: Colors.white,
+                  buttonColor: Color(0xFFFFC107),
+                  onPressed: () => submit(context),
+                  text: 'Log in',
+                )
+              ],
             ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              textInputAction: TextInputAction.done,
-              obscureText: true,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                password = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter password'),
-            ),
-            SizedBox(
-              height: 24.0,
-            ),
-            BigButton(
-              textColor: Colors.white,
-              buttonColor: Color(0xFFFFC107),
-              onPressed: () async {
-                try {
-                  startLoading();
-                  FocusScope.of(context).unfocus();
-                  final user =
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: email,
-                    password: password,
-                  );
-                  if (user != null) {
-                    await Provider.of<UserData>(context, listen: false)
-                        .initUser();
-                    await Provider.of<FirestoreProductData>(context,
-                            listen: false)
-                        .initProductList();
-                    stopLoading();
-                    Provider.of<UserData>(context, listen: false).isAdmin
-                        ? Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AdminPanelScreen(),
-                            ),
-                            (Route<dynamic> route) => false,
-                          )
-                        : Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
-                            ),
-                            (Route<dynamic> route) => false,
-                          );
-                  }
-                } catch (e) {
-                  stopLoading();
-                  print(e);
-                }
-              },
-              text: 'Log In',
-            ),
-          ],
+          ),
         ),
-        inAsyncCall: _loading,
+        inAsyncCall: _processing,
       ),
     );
   }
