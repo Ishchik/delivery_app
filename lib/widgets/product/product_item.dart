@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/models/firestore_product.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductItem extends StatelessWidget {
   final FirestoreProduct product;
@@ -21,8 +22,12 @@ class ProductItem extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(4),
                     bottomLeft: Radius.circular(4)),
-                child: Image(
-                  image: NetworkImage(product.imageUrl),
+                child: CachedNetworkImage(
+                  placeholder: (context, url) => Icon(
+                    Icons.image,
+                    size: 30,
+                  ),
+                  imageUrl: product.imageUrl,
                   height: MediaQuery.of(context).size.height / 3,
                   fit: BoxFit.cover,
                 ),

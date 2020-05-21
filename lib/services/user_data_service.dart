@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserData extends ChangeNotifier {
+class UserDataService extends ChangeNotifier {
   String _userName;
   String _userEmail;
   String _userDefaultAddress;

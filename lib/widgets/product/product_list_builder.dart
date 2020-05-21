@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'product_item.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/firestore_product_data.dart';
-import 'package:delivery_app/models/new_order_data.dart';
+import 'package:delivery_app/services/firestore_product_service.dart';
+import 'package:delivery_app/services/new_order_service.dart';
 import 'package:delivery_app/models/new_order.dart';
 import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 import 'package:delivery_app/screens/product_edit_screen.dart';
@@ -18,8 +18,9 @@ class ProductListBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        var product = Provider.of<FirestoreProductData>(context)
+        var product = Provider.of<FirestoreProductService>(context)
             .getList(productTab)[index];
         return ProductItem(
           product: product,
@@ -27,7 +28,7 @@ class ProductListBuilder extends StatelessWidget {
               ? CardButton(
                   onPressed: () {
                     NewOrder _order = NewOrder(product);
-                    Provider.of<NewOrderData>(context, listen: false)
+                    Provider.of<NewOrderService>(context, listen: false)
                         .addToCart(_order);
                   },
                   text: 'Add to cart',
@@ -49,7 +50,7 @@ class ProductListBuilder extends StatelessWidget {
         );
       },
       itemCount:
-          Provider.of<FirestoreProductData>(context).listLength(productTab),
+          Provider.of<FirestoreProductService>(context).listLength(productTab),
     );
   }
 }

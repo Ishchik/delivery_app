@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'models/new_order_data.dart';
-import 'models/user_data.dart';
+import 'services/new_order_service.dart';
+import 'services/user_data_service.dart';
 import 'screens/root_page.dart';
-import 'models/firestore_product_data.dart';
+import 'services/firestore_product_service.dart';
 
 void main() => runApp(DeliveryApp());
 
@@ -13,13 +13,13 @@ class DeliveryApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => NewOrderData(),
+          create: (context) => NewOrderService(),
         ),
         ChangeNotifierProvider(
-          create: (context) => UserData(),
+          create: (context) => UserDataService(),
         ),
         ChangeNotifierProvider(
-          create: (context) => FirestoreProductData(),
+          create: (context) => FirestoreProductService(),
         )
       ],
       child: MaterialApp(

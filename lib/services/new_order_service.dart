@@ -1,11 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
-import 'new_order.dart';
+import '../models/new_order.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class NewOrderData extends ChangeNotifier {
+class NewOrderService extends ChangeNotifier {
   List<NewOrder> _orders = [];
 
   void addToCart(NewOrder order) {

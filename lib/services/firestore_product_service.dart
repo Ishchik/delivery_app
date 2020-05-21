@@ -1,12 +1,12 @@
 import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'firestore_product.dart';
+import '../models/firestore_product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class FirestoreProductData extends ChangeNotifier {
+class FirestoreProductService extends ChangeNotifier {
   List<FirestoreProduct> _soupList = [];
   List<FirestoreProduct> _dishList = [];
   List<FirestoreProduct> _drinkList = [];

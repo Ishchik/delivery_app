@@ -3,7 +3,7 @@ import 'package:delivery_app/screens/orders_screen.dart';
 import 'package:delivery_app/screens/products_screen.dart';
 import 'profile_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/new_order_data.dart';
+import 'package:delivery_app/services/new_order_service.dart';
 import 'package:delivery_app/widgets/checkout/checkout_cart.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (!Provider.of<NewOrderData>(context, listen: false).hasItems) {
+          if (!Provider.of<NewOrderService>(context, listen: false).hasItems) {
           } else {
             showModalBottomSheet(
               isScrollControlled: true,
@@ -91,12 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.shopping_cart,
               size: 35,
             ),
-            Provider.of<NewOrderData>(context).hasItems
+            Provider.of<NewOrderService>(context).hasItems
                 ? CircleAvatar(
                     backgroundColor: Colors.red,
                     radius: 10,
                     child: Text(
-                      '${Provider.of<NewOrderData>(context).orderedItems}',
+                      '${Provider.of<NewOrderService>(context).orderedItems}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                       textAlign: TextAlign.justify,

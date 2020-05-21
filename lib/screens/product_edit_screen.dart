@@ -3,7 +3,7 @@ import 'package:delivery_app/models/firestore_product.dart';
 import 'package:delivery_app/widgets/common_widgets/info_list_tile.dart';
 import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/firestore_product_data.dart';
+import 'package:delivery_app/services/firestore_product_service.dart';
 import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
 
 class ProductEditScreen extends StatelessWidget {
@@ -11,6 +11,61 @@ class ProductEditScreen extends StatelessWidget {
   final String tabName;
 
   ProductEditScreen({this.product, this.tabName});
+
+  Widget addIngredientBuilder(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: SmallBottomSheetContainer(
+          hintText: 'Enter new ingredient',
+          onPressed: (value) {
+            if (value != null) {
+              Provider.of<FirestoreProductService>(context, listen: false)
+                  .addProductIngredient(product, tabName, value);
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget removeIngredientBuilder(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: FlexibleBottomSheet(
+          child: Container(
+            height: MediaQuery.of(context).size.height / 2,
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return Card(
+                  child: ListTile(
+                    title: Text(Provider.of<FirestoreProductService>(context)
+                        .getProductData(product)
+                        .list[index]),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        Provider.of<FirestoreProductService>(context,
+                                listen: false)
+                            .deleteProductIngredient(product, tabName, index);
+                      },
+                    ),
+                  ),
+                );
+              },
+              itemCount: Provider.of<FirestoreProductService>(context)
+                  .getProductData(product)
+                  .list
+                  .length,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +79,7 @@ class ProductEditScreen extends StatelessWidget {
               Icons.delete,
             ),
             onPressed: () {
-              Provider.of<FirestoreProductData>(context, listen: false)
+              Provider.of<FirestoreProductService>(context, listen: false)
                   .deleteProduct(product, tabName);
               Navigator.pop(context);
             },
@@ -32,43 +87,40 @@ class ProductEditScreen extends StatelessWidget {
         ],
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Container(
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: GestureDetector(
-                    child: Image(
-                      image: NetworkImage(
-                          Provider.of<FirestoreProductData>(context)
-                              .getProductData(product)
-                              .imageUrl),
-                      height: 150,
-                      width: 150,
-                      fit: BoxFit.cover,
-                    ),
-                    onTap: () async {
-                      await Provider.of<FirestoreProductData>(context,
-                              listen: false)
-                          .changeProductImage(product, tabName);
-                    },
+          Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: GestureDetector(
+                  child: Image(
+                    image: NetworkImage(
+                        Provider.of<FirestoreProductService>(context)
+                            .getProductData(product)
+                            .imageUrl),
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.cover,
+                  ),
+                  onTap: () async {
+                    await Provider.of<FirestoreProductService>(context,
+                            listen: false)
+                        .changeProductImage(product, tabName);
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                  'Tap on image to change it',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    'Tap on image to change it',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           Padding(
             padding: EdgeInsets.all(10),
@@ -82,14 +134,16 @@ class ProductEditScreen extends StatelessWidget {
           ),
           InfoListTile(
             title:
-                '${Provider.of<FirestoreProductData>(context).getProductData(product).price} USD',
+                '${Provider.of<FirestoreProductService>(context).getProductData(product).price} USD',
             child: SmallBottomSheetContainer(
               hintText: 'Enter new price',
               keyboardType: TextInputType.number,
               onPressed: (value) {
-                Provider.of<FirestoreProductData>(context, listen: false)
-                    .editProductPrice(product, tabName, value);
-                Navigator.pop(context);
+                if (value != null) {
+                  Provider.of<FirestoreProductService>(context, listen: false)
+                      .editProductPrice(product, tabName, value);
+                  Navigator.pop(context);
+                }
               },
             ),
           ),
@@ -113,25 +167,7 @@ class ProductEditScreen extends StatelessWidget {
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
-                          builder: (context) {
-                            return SingleChildScrollView(
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom),
-                                child: SmallBottomSheetContainer(
-                                  hintText: 'Enter new ingredient',
-                                  onPressed: (value) {
-                                    Provider.of<FirestoreProductData>(context,
-                                            listen: false)
-                                        .addProductIngredient(
-                                            product, tabName, value);
-                                  },
-                                ),
-                              ),
-                            );
-                          },
+                          builder: addIngredientBuilder,
                         );
                       },
                     ),
@@ -141,53 +177,7 @@ class ProductEditScreen extends StatelessWidget {
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
-                          builder: (context) {
-                            return SingleChildScrollView(
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom),
-                                child: FlexibleBottomSheet(
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.height / 2,
-                                    child: ListView.builder(
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          child: ListTile(
-                                            title: Text(Provider.of<
-                                                        FirestoreProductData>(
-                                                    context)
-                                                .getProductData(product)
-                                                .list[index]),
-                                            trailing: IconButton(
-                                              icon: Icon(Icons.delete),
-                                              onPressed: () {
-                                                Provider.of<FirestoreProductData>(
-                                                        context,
-                                                        listen: false)
-                                                    .deleteProductIngredient(
-                                                        product,
-                                                        tabName,
-                                                        index);
-                                              },
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      itemCount:
-                                          Provider.of<FirestoreProductData>(
-                                                  context)
-                                              .getProductData(product)
-                                              .list
-                                              .length,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                          builder: removeIngredientBuilder,
                         );
                       },
                     ),
@@ -198,23 +188,27 @@ class ProductEditScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return InfoListTile(
-                  title: Provider.of<FirestoreProductData>(context)
+                  title: Provider.of<FirestoreProductService>(context)
                       .getProductData(product)
                       .list[index],
                   child: SmallBottomSheetContainer(
                     hintText: 'Enter new name',
                     keyboardType: TextInputType.text,
                     onPressed: (value) {
-                      Provider.of<FirestoreProductData>(context, listen: false)
-                          .editProductIngredientName(
-                              product, index, tabName, value);
+                      if (value != null) {
+                        Provider.of<FirestoreProductService>(context,
+                                listen: false)
+                            .editProductIngredientName(
+                                product, index, tabName, value);
+                      }
                     },
                   ),
                 );
               },
-              itemCount: Provider.of<FirestoreProductData>(context)
+              itemCount: Provider.of<FirestoreProductService>(context)
                   .getProductData(product)
                   .list
                   .length,

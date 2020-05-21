@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'checkout_list.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/new_order_data.dart';
-import 'package:delivery_app/models/user_data.dart';
+import 'package:delivery_app/services/new_order_service.dart';
+import 'package:delivery_app/services/user_data_service.dart';
 import 'package:delivery_app/constants.dart';
 import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
 
@@ -22,7 +22,8 @@ class CheckoutCart extends StatelessWidget {
             height: 200,
             child: CheckoutList(),
           ),
-          Text('Total price ${Provider.of<NewOrderData>(context).totalPrice}'),
+          Text(
+              'Total price ${Provider.of<NewOrderService>(context).totalPrice}'),
           TextField(
             keyboardType: TextInputType.emailAddress,
             textAlign: TextAlign.center,
@@ -38,12 +39,12 @@ class CheckoutCart extends StatelessWidget {
               try {
                 if (address.isEmpty) {
                   print('delivery address will be set to default');
-                  address = Provider.of<UserData>(context, listen: false)
+                  address = Provider.of<UserDataService>(context, listen: false)
                       .userDefaultAddress;
                   if (address != null) {
-                    if (Provider.of<NewOrderData>(context, listen: false)
+                    if (Provider.of<NewOrderService>(context, listen: false)
                         .hasItems) {
-                      Provider.of<NewOrderData>(context, listen: false)
+                      Provider.of<NewOrderService>(context, listen: false)
                           .checkOut(address);
                       Navigator.pop(context);
                     } else {
@@ -53,9 +54,9 @@ class CheckoutCart extends StatelessWidget {
                     print('set up your address ot enter it in the field');
                   }
                 } else {
-                  if (Provider.of<NewOrderData>(context, listen: false)
+                  if (Provider.of<NewOrderService>(context, listen: false)
                       .hasItems) {
-                    Provider.of<NewOrderData>(context, listen: false)
+                    Provider.of<NewOrderService>(context, listen: false)
                         .checkOut(address);
                     Navigator.pop(context);
                   } else {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:delivery_app/models/new_order_data.dart';
+import 'package:delivery_app/services/new_order_service.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<NewOrderData>(
+    return Consumer<NewOrderService>(
       builder: (context, orderData, child) {
         return ListView.builder(
           itemBuilder: (context, index) {

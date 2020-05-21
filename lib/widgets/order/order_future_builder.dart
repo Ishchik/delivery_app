@@ -22,6 +22,7 @@ class OrderFutureBuilder extends StatelessWidget {
     List<Map<String, dynamic>> list = snapshot.data;
 
     return ListView.builder(
+      physics: BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         FirestoreOrder order = FirestoreOrder(list[index]);
         return OrderCard(

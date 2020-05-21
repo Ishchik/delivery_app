@@ -1,10 +1,10 @@
-import 'package:delivery_app/models/firestore_product_data.dart';
-import 'package:delivery_app/models/new_order_data.dart';
+import 'package:delivery_app/services/firestore_product_service.dart';
+import 'package:delivery_app/services/new_order_service.dart';
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/user_data.dart';
+import 'package:delivery_app/services/user_data_service.dart';
 import 'package:delivery_app/widgets/common_widgets/info_list_tile.dart';
 import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
 
@@ -18,26 +18,31 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             InfoListTile(
-              title: Provider.of<UserData>(context).userName,
+              title: Provider.of<UserDataService>(context).userName,
               subtitle: 'Name',
               child: SmallBottomSheetContainer(
                 hintText: 'Enter new name',
                 onPressed: (value) async {
-                  Provider.of<UserData>(context, listen: false)
-                      .changeName(value);
+                  if (value != null) {
+                    Provider.of<UserDataService>(context, listen: false)
+                        .changeName(value);
+                  }
                 },
               ),
             ),
             InfoListTile(
-              title: Provider.of<UserData>(context).userDefaultAddress != null
-                  ? Provider.of<UserData>(context).userDefaultAddress
+              title: Provider.of<UserDataService>(context).userDefaultAddress !=
+                      null
+                  ? Provider.of<UserDataService>(context).userDefaultAddress
                   : 'Not set up yet',
               subtitle: 'Address',
               child: SmallBottomSheetContainer(
                 hintText: 'Enter new address',
                 onPressed: (value) async {
-                  Provider.of<UserData>(context, listen: false)
-                      .changeAddress(value);
+                  if (value != null) {
+                    Provider.of<UserDataService>(context, listen: false)
+                        .changeAddress(value);
+                  }
                 },
               ),
             ),
@@ -46,18 +51,18 @@ class ProfileScreen extends StatelessWidget {
               children: <Widget>[
                 CardButton(
                   onPressed: () async {
-                    await Provider.of<UserData>(context, listen: false)
+                    await Provider.of<UserDataService>(context, listen: false)
                         .resetPassword();
                   },
                   text: 'Reset password',
                 ),
                 CardButton(
                   onPressed: () async {
-                    Provider.of<NewOrderData>(context, listen: false)
+                    Provider.of<NewOrderService>(context, listen: false)
                         .clearOrder();
-                    Provider.of<FirestoreProductData>(context, listen: false)
+                    Provider.of<FirestoreProductService>(context, listen: false)
                         .clearProducts();
-                    await Provider.of<UserData>(context, listen: false)
+                    await Provider.of<UserDataService>(context, listen: false)
                         .signOut();
                     Navigator.pushAndRemoveUntil(
                       context,

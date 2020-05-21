@@ -4,8 +4,8 @@ import 'package:delivery_app/widgets/common_widgets/big_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'home_screen.dart';
-import 'package:delivery_app/models/user_data.dart';
-import 'package:delivery_app/models/firestore_product_data.dart';
+import 'package:delivery_app/services/user_data_service.dart';
+import 'package:delivery_app/services/firestore_product_service.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -71,11 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
           password: _password,
         );
         if (user != null) {
-          await Provider.of<UserData>(context, listen: false).initUser();
-          await Provider.of<FirestoreProductData>(context, listen: false)
+          await Provider.of<UserDataService>(context, listen: false).initUser();
+          await Provider.of<FirestoreProductService>(context, listen: false)
               .initProductList();
           _stopProcessing();
-          Provider.of<UserData>(context, listen: false).isAdmin
+          Provider.of<UserDataService>(context, listen: false).isAdmin
               ? Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

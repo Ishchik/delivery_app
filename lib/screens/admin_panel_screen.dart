@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/widgets/product/product_list_builder.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/user_data.dart';
-import 'package:delivery_app/models/firestore_product_data.dart';
+import 'package:delivery_app/services/user_data_service.dart';
+import 'package:delivery_app/services/firestore_product_service.dart';
 import 'package:delivery_app/screens/welcome_screen.dart';
-import 'package:delivery_app/widgets/temp_bottom_sheet.dart';
+import 'package:delivery_app/widgets/product/new_product_sheet.dart';
 
 class AdminPanelScreen extends StatelessWidget {
   @override
@@ -18,9 +18,10 @@ class AdminPanelScreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () async {
-                Provider.of<FirestoreProductData>(context, listen: false)
+                Provider.of<FirestoreProductService>(context, listen: false)
                     .clearProducts();
-                await Provider.of<UserData>(context, listen: false).signOut();
+                await Provider.of<UserDataService>(context, listen: false)
+                    .signOut();
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => WelcomeScreen()),
@@ -73,7 +74,7 @@ class AdminPanelScreen extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Temp(),
+                    child: NewProductSheet(),
                   ),
                 );
               },

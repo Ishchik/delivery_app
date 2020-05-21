@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:delivery_app/widgets/common_widgets/big_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/user_data.dart';
+import 'package:delivery_app/services/user_data_service.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
@@ -75,7 +75,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           FirebaseUser _user = await _auth.currentUser();
           _user.sendEmailVerification();
           print('verification link has been sent to your email');
-          await Provider.of<UserData>(context, listen: false)
+          await Provider.of<UserDataService>(context, listen: false)
               .initNewUser(_email);
           _stopProcessing();
           Navigator.pop(context);

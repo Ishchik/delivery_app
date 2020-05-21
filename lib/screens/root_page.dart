@@ -4,8 +4,8 @@ import 'home_screen.dart';
 import 'welcome_screen.dart';
 import 'admin_panel_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:delivery_app/models/user_data.dart';
-import 'package:delivery_app/models/firestore_product_data.dart';
+import 'package:delivery_app/services/user_data_service.dart';
+import 'package:delivery_app/services/firestore_product_service.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -30,48 +30,19 @@ class _RootPageState extends State<RootPage> {
   }
 
   Widget buildWaitingScreen() {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          height: 200.0,
-          width: 250.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Hero(
-                tag: 'AppName',
-                child: Text(
-                  'DELIVERY APP',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Text(
-                '...delivering happiness',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+    return Scaffold();
   }
 
   void checkUser() async {
     var _user = await _auth.currentUser();
     if (_user != null) {
-      await Provider.of<FirestoreProductData>(context, listen: false)
+      await Provider.of<FirestoreProductService>(context, listen: false)
           .initProductList();
-      await Provider.of<UserData>(context, listen: false).initUser();
+      await Provider.of<UserDataService>(context, listen: false).initUser();
 
       setState(() {
         authStatus =
-            Provider.of<UserData>(context, listen: false).isAdmin == true
+            Provider.of<UserDataService>(context, listen: false).isAdmin == true
                 ? AuthStatus.LOGGED_IN_ADMIN
                 : AuthStatus.LOGGED_IN_USER;
       });
