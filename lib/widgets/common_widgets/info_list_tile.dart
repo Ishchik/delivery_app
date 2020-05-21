@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:delivery_app/constants.dart';
 
 class InfoListTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final Widget child;
 
-  InfoListTile({this.title, this.subtitle, this.child});
+  InfoListTile({@required this.title, this.subtitle, @required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +15,7 @@ class InfoListTile extends StatelessWidget {
         isThreeLine: false,
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
+          style: kHeaderTextStyle,
         ),
         subtitle:
             subtitle != null ? Text(subtitle) : Text('Tap on icon to edit'),

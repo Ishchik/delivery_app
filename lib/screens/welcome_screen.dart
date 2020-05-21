@@ -4,6 +4,7 @@ import 'package:delivery_app/widgets/common_widgets/big_button.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
+import 'package:delivery_app/constants.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -17,10 +18,7 @@ class WelcomeScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               'DELIVERY APP',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: kParagraph1TextStyle,
             ),
             SizedBox(
               height: 48.0,

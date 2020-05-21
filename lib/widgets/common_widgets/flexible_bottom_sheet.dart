@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class FlexibleBottomSheet extends StatelessWidget {
   final Widget child;
 
-  FlexibleBottomSheet({this.child});
+  FlexibleBottomSheet({@required this.child});
 
   @override
   Widget build(BuildContext context) {

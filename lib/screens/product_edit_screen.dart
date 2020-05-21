@@ -5,6 +5,7 @@ import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container
 import 'package:provider/provider.dart';
 import 'package:delivery_app/services/firestore_product_service.dart';
 import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
+import 'package:delivery_app/constants.dart';
 
 class ProductEditScreen extends StatelessWidget {
   final FirestoreProduct product;
@@ -113,11 +114,7 @@ class ProductEditScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   'Tap on image to change it',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black54,
-                  ),
+                  style: kHintTextStyle,
                 ),
               ),
             ],
@@ -126,10 +123,7 @@ class ProductEditScreen extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: Text(
               'Price',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: kParagraph2TextStyle,
             ),
           ),
           InfoListTile(
@@ -154,10 +148,7 @@ class ProductEditScreen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'Ingredients',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: kParagraph2TextStyle,
                 ),
                 Row(
                   children: <Widget>[

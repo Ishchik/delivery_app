@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:delivery_app/constants.dart';
 
 class OrderCard extends StatelessWidget {
   final int orderID;
@@ -8,11 +9,11 @@ class OrderCard extends StatelessWidget {
   final List orderList;
 
   OrderCard(
-      {this.orderID,
-      this.orderDate,
-      this.orderAddress,
-      this.orderList,
-      this.totalPrice});
+      {@required this.orderID,
+      @required this.orderDate,
+      @required this.orderAddress,
+      @required this.orderList,
+      @required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -32,34 +33,23 @@ class OrderCard extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       'Order $orderID',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: kHeaderTextStyle,
                     ),
                     Text(
                       'Order Date:',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style: kParagraph2TextStyle,
                     ),
                     Text(
                       orderDate,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
-                      ),
+                      style: kHintTextStyle,
                     ),
                     Text(
                       'Order Address:',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      style: kParagraph2TextStyle,
                     ),
                     Text(
                       orderAddress,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
-                      ),
+                      style: kHintTextStyle,
                     ),
                   ],
                 ),
@@ -103,10 +93,7 @@ class OrderCard extends StatelessWidget {
                                 title: Text(
 //                                  'some soup(1)',
                                   '${orderList[index]['name']} (${orderList[index]['quantity']})',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: kParagraph2TextStyle,
                                 ),
                                 subtitle: Text(
                                     'Total price: ${orderList[index]['price']}'),
@@ -123,10 +110,7 @@ class OrderCard extends StatelessWidget {
                     ),
                     Text(
                       'Total price: $totalPrice',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: kParagraph1TextStyle,
                     ),
                   ],
                 ),

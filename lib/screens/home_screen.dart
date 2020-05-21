@@ -5,6 +5,7 @@ import 'profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/services/new_order_service.dart';
 import 'package:delivery_app/widgets/checkout/checkout_cart.dart';
+import 'package:delivery_app/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -97,8 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     radius: 10,
                     child: Text(
                       '${Provider.of<NewOrderService>(context).orderedItems}',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
+                      style: kNotificationTextStyle,
                       textAlign: TextAlign.justify,
                     ),
                   )

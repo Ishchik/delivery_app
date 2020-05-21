@@ -6,7 +6,7 @@ class ProductItem extends StatelessWidget {
   final FirestoreProduct product;
   final Widget button;
 
-  ProductItem({this.product, this.button});
+  ProductItem({@required this.product, @required this.button});
 
   @override
   Widget build(BuildContext context) {

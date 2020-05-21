@@ -4,7 +4,7 @@ class CardButton extends StatelessWidget {
   final String text;
   final Function onPressed;
 
-  CardButton({this.onPressed, this.text});
+  CardButton({@required this.onPressed, @required this.text});
 
   @override
   Widget build(BuildContext context) {

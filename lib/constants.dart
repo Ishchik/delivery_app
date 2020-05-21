@@ -7,11 +7,42 @@ const kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(4.0)),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0),
+    borderSide: BorderSide(color: Color(0xFFFFC107), width: 1.0),
     borderRadius: BorderRadius.all(Radius.circular(4.0)),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+    borderSide: BorderSide(color: Color(0xFFFFC107), width: 2.0),
     borderRadius: BorderRadius.all(Radius.circular(4.0)),
   ),
+);
+
+const kNotificationTextStyle = TextStyle(
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+);
+
+const kHintTextStyle = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+  color: Colors.black54,
+);
+
+const kParagraph1TextStyle = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+);
+
+const kParagraph2TextStyle = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.bold,
+);
+
+const kParagraph3TextStyle = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+
+const kHeaderTextStyle = TextStyle(
+  fontSize: 22,
+  fontWeight: FontWeight.bold,
 );

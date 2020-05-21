@@ -20,6 +20,14 @@ class _NewProductSheetState extends State<NewProductSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              'New product',
+              style: kHeaderTextStyle,
+              textAlign: TextAlign.center,
+            ),
+          ),
           TextField(
             autofocus: true,
             textAlign: TextAlign.center,

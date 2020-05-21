@@ -13,7 +13,8 @@ class ProductListBuilder extends StatelessWidget {
   final String productTab;
   final type futureBuilderType;
 
-  ProductListBuilder({this.futureBuilderType, this.productTab});
+  ProductListBuilder(
+      {@required this.futureBuilderType, @required this.productTab});
 
   @override
   Widget build(BuildContext context) {
