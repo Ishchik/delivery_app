@@ -10,21 +10,62 @@ class CheckoutList extends StatelessWidget {
       builder: (context, orderData, child) {
         return ListView.builder(
           itemBuilder: (context, index) {
-            final data = orderData.orders[index];
+            final orderItemData = orderData.orders[index];
             return Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-              child: ListTile(
-                title: Text(
-                  '${data.productName} (${data.quantity})',
-                  style: kParagraph2TextStyle,
+              padding: EdgeInsets.all(5),
+              child: Card(
+                elevation: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            '${orderItemData.productName} ',
+                            style: kParagraph1TextStyle,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            'Total - ${orderItemData.price} USD',
+                            style: kParagraph3TextStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          iconSize: 25,
+                          onPressed: () =>
+                              orderData.addOrderItem(orderItemData),
+                        ),
+                        Container(
+                          child: Text(
+                            '${orderItemData.quantity}',
+                            style: kParagraph2TextStyle,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: EdgeInsets.all(3),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          iconSize: 25,
+                          onPressed: () =>
+                              orderData.deleteOrderItem(orderItemData),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                trailing: Text(
-                  '${data.price}',
-                  style: kParagraph2TextStyle,
-                ),
-                onLongPress: () {
-                  orderData.deleteOrderItem(data);
-                },
               ),
             );
           },

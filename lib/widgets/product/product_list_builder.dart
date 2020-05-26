@@ -3,7 +3,7 @@ import 'product_item.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/services/firestore_product_service.dart';
 import 'package:delivery_app/services/new_order_service.dart';
-import 'package:delivery_app/models/new_order.dart';
+import 'package:delivery_app/models/new_order_item.dart';
 import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 import 'package:delivery_app/screens/product_edit_screen.dart';
 
@@ -28,9 +28,9 @@ class ProductListBuilder extends StatelessWidget {
           button: futureBuilderType == type.USER
               ? CardButton(
                   onPressed: () {
-                    NewOrder _order = NewOrder(product);
+                    NewOrderItem _order = NewOrderItem(product);
                     Provider.of<NewOrderService>(context, listen: false)
-                        .addToCart(_order);
+                        .addOrderItem(_order);
                   },
                   text: 'Add to cart',
                 )

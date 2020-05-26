@@ -1,28 +1,12 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
-import '../models/new_order.dart';
+import '../models/new_order_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NewOrderService extends ChangeNotifier {
-  List<NewOrder> _orders = [];
-
-  void addToCart(NewOrder order) {
-    var index =
-        _orders.indexWhere((item) => item.productName == order.productName);
-
-    if (index != -1) {
-      _orders[index].quantity++;
-      _orders[index].price += order.price;
-    } else {
-      _orders.add(order);
-//      _orders.sort((a, b) =>
-//          a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
-    }
-
-    notifyListeners();
-  }
+  List<NewOrderItem> _orders = [];
 
   bool get hasItems {
     if (_orders.length > 0) {
@@ -33,8 +17,8 @@ class NewOrderService extends ChangeNotifier {
 
   int get orderedItems {
     int counter = 0;
-    for (NewOrder order in _orders) {
-      counter += order.quantity;
+    for (NewOrderItem orderItem in _orders) {
+      counter += orderItem.quantity;
     }
     return counter;
   }
@@ -45,18 +29,42 @@ class NewOrderService extends ChangeNotifier {
 
   int get totalPrice {
     int totalPrice = 0;
-    for (NewOrder order in _orders) {
-      totalPrice += order.price;
+    for (NewOrderItem orderItem in _orders) {
+      totalPrice += orderItem.price;
     }
     return totalPrice;
   }
 
-  UnmodifiableListView<NewOrder> get orders {
+  UnmodifiableListView<NewOrderItem> get orders {
     return UnmodifiableListView(_orders);
   }
 
-  void deleteOrderItem(NewOrder order) {
-    _orders.remove(order);
+  void addOrderItem(NewOrderItem orderItem) {
+    var index =
+        _orders.indexWhere((item) => item.productName == orderItem.productName);
+
+    if (index != -1) {
+      var priceForPiece = orderItem.price / orderItem.quantity;
+      _orders[index].quantity++;
+      _orders[index].price += priceForPiece.toInt();
+    } else {
+      _orders.add(orderItem);
+//      _orders.sort((a, b) =>
+//          a.productName.toLowerCase().compareTo(b.productName.toLowerCase()));
+    }
+
+    notifyListeners();
+  }
+
+  void deleteOrderItem(NewOrderItem orderItem) {
+    if (orderItem.quantity > 1) {
+      var priceForPiece = orderItem.price / orderItem.quantity;
+      orderItem.quantity--;
+      orderItem.price -= priceForPiece.toInt();
+    } else {
+      _orders.remove(orderItem);
+    }
+
     notifyListeners();
   }
 
@@ -76,11 +84,11 @@ class NewOrderService extends ChangeNotifier {
 
       List<Map<String, dynamic>> list = [];
 
-      for (NewOrder order in _orders) {
+      for (NewOrderItem orderItem in _orders) {
         list.add({
-          'name': order.productName,
-          'quantity': order.quantity,
-          'price': order.price
+          'name': orderItem.productName,
+          'quantity': orderItem.quantity,
+          'price': orderItem.price
         });
       }
 

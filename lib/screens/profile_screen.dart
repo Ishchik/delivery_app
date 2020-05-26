@@ -32,8 +32,9 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             InfoListTile(
-              title: Provider.of<UserDataService>(context).userDefaultAddress !=
-                      null
+              title: Provider.of<UserDataService>(context)
+                      .userDefaultAddress
+                      .isNotEmpty
                   ? Provider.of<UserDataService>(context).userDefaultAddress
                   : 'Not set up yet',
               subtitle: 'Address',

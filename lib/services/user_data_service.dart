@@ -27,7 +27,7 @@ class UserDataService extends ChangeNotifier {
     await Firestore.instance
         .collection('user_info')
         .document(email)
-        .setData({'isAdmin': false, 'name': email, 'address': null});
+        .setData({'isAdmin': false, 'name': email, 'address': ''});
   }
 
   Future<void> changeName(String newName) async {
