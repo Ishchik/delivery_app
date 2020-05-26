@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/constants.dart';
+import 'package:flutter/widgets.dart';
 
 class OrderCard extends StatelessWidget {
   final int orderID;
@@ -76,19 +77,14 @@ class OrderCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black54),
                         borderRadius: BorderRadius.circular(5),
-                        color: Colors.blueGrey[50],
                       ),
                       height: MediaQuery.of(context).size.height / 6,
                       child: ListView.builder(
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.all(5),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black54),
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
+                            child: Card(
+                              elevation: 5,
                               child: ListTile(
                                 title: Text(
 //                                  'some soup(1)',
@@ -103,6 +99,7 @@ class OrderCard extends StatelessWidget {
                           );
                         },
                         itemCount: orderList.length,
+                        physics: BouncingScrollPhysics(),
                       ),
                     ),
                     SizedBox(

@@ -63,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         onTap: onTabTap,
-        selectedItemColor: Color(0xFF03A9F4),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -86,27 +85,29 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Stack(
           overflow: Overflow.visible,
-          alignment: AlignmentDirectional.bottomEnd,
+//          alignment: AlignmentDirectional.centerEnd,
           children: [
             Icon(
               Icons.shopping_cart,
               size: 35,
             ),
             Provider.of<NewOrderService>(context).hasItems
-                ? CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 10,
-                    child: Text(
-                      '${Provider.of<NewOrderService>(context).orderedItems}',
-                      style: kNotificationTextStyle,
-                      textAlign: TextAlign.justify,
+                ? Positioned(
+                    left: 25,
+                    bottom: 25,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.red,
+                      radius: 15,
+                      child: Text(
+                        '${Provider.of<NewOrderService>(context).orderedItems}',
+                        style: kNotificationTextStyle,
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
                   )
                 : SizedBox(),
           ],
         ),
-        backgroundColor: Colors.lightBlueAccent,
-        foregroundColor: Colors.white,
       ),
     );
   }

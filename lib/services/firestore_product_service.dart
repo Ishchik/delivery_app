@@ -82,21 +82,23 @@ class FirestoreProductService extends ChangeNotifier {
     await ImagePicker.pickImage(source: ImageSource.gallery)
         .then((image) async {
       print(image);
-      var _storageRef = FirebaseStorage.instance
-          .ref()
-          .child('images/$tabName/${product.name}');
-      await _storageRef.putFile(image).onComplete.then((snapshot) async {
-        print('uploaded');
-        await _storageRef.getDownloadURL().then((url) async {
-          await Firestore.instance
-              .collection('product_info')
-              .document('${tabName}_info')
-              .collection(tabName)
-              .document(product.name)
-              .updateData({'image_url': url});
-          product.imageUrl = url.toString();
+      if (image != null) {
+        var _storageRef = FirebaseStorage.instance
+            .ref()
+            .child('images/$tabName/${product.name}');
+        await _storageRef.putFile(image).onComplete.then((snapshot) async {
+          print('uploaded');
+          await _storageRef.getDownloadURL().then((url) async {
+            await Firestore.instance
+                .collection('product_info')
+                .document('${tabName}_info')
+                .collection(tabName)
+                .document(product.name)
+                .updateData({'image_url': url});
+            product.imageUrl = url.toString();
+          });
         });
-      });
+      }
     });
 
     notifyListeners();
@@ -117,19 +119,19 @@ class FirestoreProductService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void editProductIngredientName(FirestoreProduct product, int index,
+  Future<void> editProductIngredientName(FirestoreProduct product, int index,
       String tabName, String newName) async {
     product.list[index] = newName;
     await _editProductIngredients(product, tabName);
   }
 
-  void addProductIngredient(
+  Future<void> addProductIngredient(
       FirestoreProduct product, String tabName, String newIngredient) async {
     product.list.add(newIngredient);
     await _editProductIngredients(product, tabName);
   }
 
-  void deleteProductIngredient(
+  Future<void> deleteProductIngredient(
       FirestoreProduct product, String tabName, int index) async {
     product.list.removeAt(index);
     await _editProductIngredients(product, tabName);
@@ -179,6 +181,7 @@ class FirestoreProductService extends ChangeNotifier {
       await transaction.set(docRef, map);
     });
 
+//    notifyListeners();
     return product;
   }
 

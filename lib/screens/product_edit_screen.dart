@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery_app/models/firestore_product.dart';
 import 'package:delivery_app/widgets/common_widgets/info_list_tile.dart';
@@ -20,9 +21,9 @@ class ProductEditScreen extends StatelessWidget {
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: SmallBottomSheetContainer(
           hintText: 'Enter new ingredient',
-          onPressed: (value) {
+          onPressed: (value) async {
             if (value != null) {
-              Provider.of<FirestoreProductService>(context, listen: false)
+              await Provider.of<FirestoreProductService>(context, listen: false)
                   .addProductIngredient(product, tabName, value);
             }
           },
@@ -48,8 +49,8 @@ class ProductEditScreen extends StatelessWidget {
                         .list[index]),
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () {
-                        Provider.of<FirestoreProductService>(context,
+                      onPressed: () async {
+                        await Provider.of<FirestoreProductService>(context,
                                 listen: false)
                             .deleteProductIngredient(product, tabName, index);
                       },
@@ -79,8 +80,8 @@ class ProductEditScreen extends StatelessWidget {
             icon: Icon(
               Icons.delete,
             ),
-            onPressed: () {
-              Provider.of<FirestoreProductService>(context, listen: false)
+            onPressed: () async {
+              await Provider.of<FirestoreProductService>(context, listen: false)
                   .deleteProduct(product, tabName);
               Navigator.pop(context);
             },
@@ -93,15 +94,19 @@ class ProductEditScreen extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: GestureDetector(
-                  child: Image(
-                    image: NetworkImage(
-                        Provider.of<FirestoreProductService>(context)
-                            .getProductData(product)
-                            .imageUrl),
+                child: InkWell(
+                  child: Container(
                     height: 150,
                     width: 150,
-                    fit: BoxFit.cover,
+                    child: CachedNetworkImage(
+                      placeholder: (context, url) => Icon(
+                        Icons.image,
+                        size: 30,
+                      ),
+                      imageUrl: Provider.of<FirestoreProductService>(context)
+                          .getProductData(product)
+                          .imageUrl,
+                    ),
                   ),
                   onTap: () async {
                     await Provider.of<FirestoreProductService>(context,
@@ -132,11 +137,11 @@ class ProductEditScreen extends StatelessWidget {
             child: SmallBottomSheetContainer(
               hintText: 'Enter new price',
               keyboardType: TextInputType.number,
-              onPressed: (value) {
+              onPressed: (value) async {
                 if (value != null) {
-                  Provider.of<FirestoreProductService>(context, listen: false)
+                  await Provider.of<FirestoreProductService>(context,
+                          listen: false)
                       .editProductPrice(product, tabName, value);
-                  Navigator.pop(context);
                 }
               },
             ),
@@ -188,9 +193,9 @@ class ProductEditScreen extends StatelessWidget {
                   child: SmallBottomSheetContainer(
                     hintText: 'Enter new name',
                     keyboardType: TextInputType.text,
-                    onPressed: (value) {
+                    onPressed: (value) async {
                       if (value != null) {
-                        Provider.of<FirestoreProductService>(context,
+                        await Provider.of<FirestoreProductService>(context,
                                 listen: false)
                             .editProductIngredientName(
                                 product, index, tabName, value);

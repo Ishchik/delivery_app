@@ -1,3 +1,4 @@
+import 'package:delivery_app/constants.dart';
 import 'package:flutter/material.dart';
 
 class BigButton extends StatelessWidget {
@@ -15,21 +16,19 @@ class BigButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        elevation: 5.0,
-        color: buttonColor,
-        borderRadius: BorderRadius.circular(4.0),
-        child: MaterialButton(
-          onPressed: onPressed,
-          minWidth: 150.0,
-          height: 42.0,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-            ),
-          ),
+      padding: EdgeInsets.symmetric(vertical: 16),
+      child: RawMaterialButton(
+        elevation: 6,
+        fillColor: buttonColor,
+        constraints: BoxConstraints(
+          minHeight: 45,
+          minWidth: 150,
+        ),
+        onPressed: onPressed,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        child: Text(
+          text,
+          style: kParagraph2TextStyle.copyWith(color: textColor),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:delivery_app/constants.dart';
 import 'package:flutter/material.dart';
 
 class CardButton extends StatelessWidget {
@@ -17,14 +18,10 @@ class CardButton extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width / 3,
       ),
       onPressed: onPressed,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       child: Text(
         text,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
+        style: kParagraph2TextStyle.copyWith(color: Colors.white),
       ),
     );
   }

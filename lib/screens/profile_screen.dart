@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:delivery_app/services/user_data_service.dart';
 import 'package:delivery_app/widgets/common_widgets/info_list_tile.dart';
 import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -51,6 +52,9 @@ class ProfileScreen extends StatelessWidget {
               children: <Widget>[
                 CardButton(
                   onPressed: () async {
+                    Fluttertoast.showToast(
+                      msg: 'Reset link has been sent to your email',
+                    );
                     await Provider.of<UserDataService>(context, listen: false)
                         .resetPassword();
                   },

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:delivery_app/services/user_data_service.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -72,9 +73,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         );
 
         if (newUser != null) {
+          Fluttertoast.showToast(
+              msg: 'Verification link has been sent to $_email');
           FirebaseUser _user = await _auth.currentUser();
           _user.sendEmailVerification();
-          print('verification link has been sent to your email');
           await Provider.of<UserDataService>(context, listen: false)
               .initNewUser(_email);
           _stopProcessing();

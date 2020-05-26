@@ -5,6 +5,7 @@ import 'login_screen.dart';
 import 'registration_screen.dart';
 import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
 import 'package:delivery_app/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -61,10 +62,13 @@ class WelcomeScreen extends StatelessWidget {
                         child: SmallBottomSheetContainer(
                           hintText: 'Enter email',
                           onPressed: (value) async {
-                            await FirebaseAuth.instance
-                                .sendPasswordResetEmail(email: value);
-                            print(
-                                'link to reset your password has been sent to your email');
+                            if (value != null) {
+                              Fluttertoast.showToast(
+                                msg: 'Reset link has been sent to your email',
+                              );
+                              await FirebaseAuth.instance
+                                  .sendPasswordResetEmail(email: value);
+                            }
                           },
                         ),
                       ),

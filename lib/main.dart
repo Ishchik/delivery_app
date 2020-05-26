@@ -26,6 +26,9 @@ class DeliveryApp extends StatelessWidget {
         title: 'Delivery App',
         home: RootPage(),
         theme: ThemeData(
+          accentColor: Colors.yellow,
+          canvasColor: Colors.amber,
+          scaffoldBackgroundColor: Colors.grey[200],
           primaryColor: Colors.white,
         ),
         debugShowCheckedModeBanner: false,

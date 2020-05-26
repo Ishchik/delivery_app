@@ -6,6 +6,7 @@ import 'package:delivery_app/services/user_data_service.dart';
 import 'package:delivery_app/constants.dart';
 import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
 import 'package:delivery_app/widgets/common_widgets/big_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckoutCart extends StatelessWidget {
   @override
@@ -23,12 +24,11 @@ class CheckoutCart extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          Container(
-            height: 200,
-            child: CheckoutList(),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black54),
-              borderRadius: BorderRadius.circular(5),
+          Card(
+            elevation: 7,
+            child: Container(
+              height: 200,
+              child: CheckoutList(),
             ),
           ),
           Padding(
@@ -54,7 +54,9 @@ class CheckoutCart extends StatelessWidget {
             onPressed: () {
               try {
                 if (address.isEmpty) {
-                  print('delivery address will be set to default');
+                  Fluttertoast.showToast(
+                    msg: 'Delivery address will be set to default',
+                  );
                   address = Provider.of<UserDataService>(context, listen: false)
                       .userDefaultAddress;
                   if (address != null) {
@@ -63,11 +65,19 @@ class CheckoutCart extends StatelessWidget {
                       Provider.of<NewOrderService>(context, listen: false)
                           .checkOut(address);
                       Navigator.pop(context);
+                      Fluttertoast.showToast(
+                        msg: 'Thanks for the order. Wait for it...',
+                      );
                     } else {
-                      print('enter your address');
+                      Fluttertoast.showToast(
+                        msg: "Enter eddress",
+                      );
                     }
                   } else {
-                    print('set up your address ot enter it in the field');
+                    Fluttertoast.showToast(
+                      msg:
+                          'Set up your address in profile menu or enter it in the field',
+                    );
                   }
                 } else {
                   if (Provider.of<NewOrderService>(context, listen: false)
@@ -75,12 +85,18 @@ class CheckoutCart extends StatelessWidget {
                     Provider.of<NewOrderService>(context, listen: false)
                         .checkOut(address);
                     Navigator.pop(context);
+                    Fluttertoast.showToast(
+                      msg: 'Thanks for the order. Wait for it...',
+                    );
                   } else {
-                    print('seems like your cart is empty. try to fill it');
+                    Fluttertoast.showToast(
+                      msg: 'Seems like your cart is empty',
+                    );
                   }
                 }
               } catch (e) {
                 print(e);
+                Navigator.pop(context);
               }
             },
           ),
