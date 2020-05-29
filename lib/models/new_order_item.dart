@@ -5,8 +5,7 @@ class NewOrderItem {
   int quantity = 1;
   int price;
 
-  NewOrderItem(FirestoreProduct product) {
-    this.productName = product.name;
-    this.price = product.price;
-  }
+  NewOrderItem(FirestoreProduct product)
+      : productName = product.productName,
+        price = product.productPrice;
 }

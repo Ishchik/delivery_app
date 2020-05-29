@@ -1,9 +1,9 @@
-import 'package:delivery_app/screens/product_edit_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:delivery_app/constants.dart';
-import 'package:provider/provider.dart';
+import 'package:delivery_app/screens/product_edit_screen.dart';
 import 'package:delivery_app/services/firestore_product_service.dart';
 import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NewProductSheet extends StatefulWidget {
   @override
@@ -12,7 +12,31 @@ class NewProductSheet extends StatefulWidget {
 
 class _NewProductSheetState extends State<NewProductSheet> {
   var newValue;
-  String group = 'soups';
+  String _group = 'soups';
+
+  void _setGroup(value) {
+    setState(() {
+      _group = value;
+    });
+  }
+
+  void _createProduct() async {
+    if (newValue != null) {
+      var product =
+          await Provider.of<FirestoreProductService>(context, listen: false)
+              .createProduct(newValue, _group);
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ProductEditScreen(
+            tabName: _group,
+            product: product,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +55,7 @@ class _NewProductSheetState extends State<NewProductSheet> {
           TextField(
             autofocus: true,
             textAlign: TextAlign.center,
-            onChanged: (value) {
-              newValue = value;
-            },
+            onChanged: (value) => newValue = value,
             decoration:
                 kTextFieldDecoration.copyWith(hintText: 'Enter new name'),
           ),
@@ -44,13 +66,8 @@ class _NewProductSheetState extends State<NewProductSheet> {
                 children: <Widget>[
                   Radio(
                     value: 'soups',
-                    groupValue: group,
-                    onChanged: (value) {
-                      setState(() {
-                        print(value);
-                        group = value;
-                      });
-                    },
+                    groupValue: _group,
+                    onChanged: _setGroup,
                   ),
                   Text('Soups'),
                 ],
@@ -59,13 +76,8 @@ class _NewProductSheetState extends State<NewProductSheet> {
                 children: <Widget>[
                   Radio(
                     value: 'dishes',
-                    groupValue: group,
-                    onChanged: (value) {
-                      setState(() {
-                        print(value);
-                        group = value;
-                      });
-                    },
+                    groupValue: _group,
+                    onChanged: _setGroup,
                   ),
                   Text('Dishes'),
                 ],
@@ -74,13 +86,8 @@ class _NewProductSheetState extends State<NewProductSheet> {
                 children: <Widget>[
                   Radio(
                     value: 'drinks',
-                    groupValue: group,
-                    onChanged: (value) {
-                      setState(() {
-                        print(value);
-                        group = value;
-                      });
-                    },
+                    groupValue: _group,
+                    onChanged: _setGroup,
                   ),
                   Text('Drinks'),
                 ],
@@ -89,24 +96,7 @@ class _NewProductSheetState extends State<NewProductSheet> {
           ),
           FlatButton(
             child: Text('Done'),
-            onPressed: () async {
-              if (newValue != null) {
-                var product = await Provider.of<FirestoreProductService>(
-                        context,
-                        listen: false)
-                    .createProduct(newValue, group);
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (build) => ProductEditScreen(
-                      tabName: group,
-                      product: product,
-                    ),
-                  ),
-                );
-              }
-            },
+            onPressed: _createProduct,
           )
         ],
       ),

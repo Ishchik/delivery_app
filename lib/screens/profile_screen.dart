@@ -1,13 +1,14 @@
 import 'package:delivery_app/services/firestore_product_service.dart';
 import 'package:delivery_app/services/new_order_service.dart';
-import 'package:flutter/material.dart';
-import 'welcome_screen.dart';
-import 'package:delivery_app/widgets/common_widgets/card_button.dart';
-import 'package:provider/provider.dart';
 import 'package:delivery_app/services/user_data_service.dart';
+import 'package:delivery_app/widgets/common_widgets/card_button.dart';
 import 'package:delivery_app/widgets/common_widgets/info_list_tile.dart';
 import 'package:delivery_app/widgets/common_widgets/small_bottom_sheet_container.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
+import 'welcome_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override

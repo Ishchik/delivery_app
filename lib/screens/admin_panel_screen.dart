@@ -1,12 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:delivery_app/widgets/product/product_list_builder.dart';
-import 'package:provider/provider.dart';
-import 'package:delivery_app/services/user_data_service.dart';
 import 'package:delivery_app/services/firestore_product_service.dart';
+import 'package:delivery_app/services/user_data_service.dart';
 import 'package:delivery_app/screens/welcome_screen.dart';
+import 'package:delivery_app/widgets/product/product_list_builder.dart';
 import 'package:delivery_app/widgets/product/new_product_sheet.dart';
+import 'package:provider/provider.dart';
 
 class AdminPanelScreen extends StatelessWidget {
+  void _quitPage(BuildContext context) async {
+    Provider.of<FirestoreProductService>(context, listen: false)
+        .clearProducts();
+
+    await Provider.of<UserDataService>(context, listen: false).signOut();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => WelcomeScreen()),
+      (Route<dynamic> route) => false,
+    );
+  }
+
+  void _showBottomSheet(BuildContext context, Widget child) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (_) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -17,17 +46,7 @@ class AdminPanelScreen extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.exit_to_app),
-              onPressed: () async {
-                Provider.of<FirestoreProductService>(context, listen: false)
-                    .clearProducts();
-                await Provider.of<UserDataService>(context, listen: false)
-                    .signOut();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => WelcomeScreen()),
-                  (Route<dynamic> route) => false,
-                );
-              },
+              onPressed: () => _quitPage(context),
             )
           ],
           centerTitle: true,
@@ -65,21 +84,7 @@ class AdminPanelScreen extends StatelessWidget {
           child: Icon(
             Icons.add,
           ),
-          onPressed: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) {
-                return SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: NewProductSheet(),
-                  ),
-                );
-              },
-            );
-          },
+          onPressed: () => _showBottomSheet(context, NewProductSheet()),
         ),
       ),
     );

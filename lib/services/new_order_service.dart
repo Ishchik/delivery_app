@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import 'package:flutter/foundation.dart';
-import '../models/new_order_item.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery_app/models/new_order_item.dart';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NewOrderService extends ChangeNotifier {
   List<NewOrderItem> _orders = [];

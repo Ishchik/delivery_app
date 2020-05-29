@@ -1,11 +1,12 @@
+import 'package:delivery_app/services/firestore_product_service.dart';
+import 'package:delivery_app/services/user_data_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'admin_panel_screen.dart';
 import 'home_screen.dart';
 import 'welcome_screen.dart';
-import 'admin_panel_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:delivery_app/services/user_data_service.dart';
-import 'package:delivery_app/services/firestore_product_service.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -38,13 +39,14 @@ class _RootPageState extends State<RootPage> {
     if (_user != null) {
       await Provider.of<FirestoreProductService>(context, listen: false)
           .initProductList();
-      await Provider.of<UserDataService>(context, listen: false).initUser();
+
+      final userData = Provider.of<UserDataService>(context, listen: false);
+      await userData.initUser();
 
       setState(() {
-        authStatus =
-            Provider.of<UserDataService>(context, listen: false).isAdmin == true
-                ? AuthStatus.LOGGED_IN_ADMIN
-                : AuthStatus.LOGGED_IN_USER;
+        authStatus = userData.isAdmin == true
+            ? AuthStatus.LOGGED_IN_ADMIN
+            : AuthStatus.LOGGED_IN_USER;
       });
     } else {
       setState(() {

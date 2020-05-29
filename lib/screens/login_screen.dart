@@ -1,13 +1,14 @@
 import 'package:delivery_app/screens/admin_panel_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:delivery_app/services/firestore_product_service.dart';
+import 'package:delivery_app/services/user_data_service.dart';
 import 'package:delivery_app/widgets/common_widgets/big_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
-import 'home_screen.dart';
-import 'package:delivery_app/services/user_data_service.dart';
-import 'package:delivery_app/services/firestore_product_service.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:provider/provider.dart';
+
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _email;
   String _password;
+
   bool _processing = false;
 
   void _startProcessing() {
@@ -66,34 +68,34 @@ class _LoginScreenState extends State<LoginScreen> {
       _formKey.currentState.save();
       try {
         _startProcessing();
+
         FocusScope.of(context).unfocus();
+
         final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _email,
           password: _password,
         );
         if (user != null) {
-          await Provider.of<UserDataService>(context, listen: false).initUser();
+          final userData = Provider.of<UserDataService>(context, listen: false);
+          await userData.initUser();
+
           await Provider.of<FirestoreProductService>(context, listen: false)
               .initProductList();
+
           _stopProcessing();
-          Provider.of<UserDataService>(context, listen: false).isAdmin
-              ? Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdminPanelScreen(),
-                  ),
-                  (Route<dynamic> route) => false,
-                )
-              : Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
-                  ),
-                  (Route<dynamic> route) => false,
-                );
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  userData.isAdmin ? AdminPanelScreen() : HomeScreen(),
+            ),
+            (Route<dynamic> route) => false,
+          );
         }
       } catch (e) {
         _stopProcessing();
+
         switch (e.message) {
           case 'There is no user record corresponding to this identifier. The user may have been deleted.':
             Fluttertoast.showToast(msg: 'This user does not exist');

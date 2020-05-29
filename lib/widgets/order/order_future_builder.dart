@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:delivery_app/models/firestore_order.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
 import 'order_card.dart';
 
 class OrderFutureBuilder extends StatelessWidget {
@@ -18,9 +19,34 @@ class OrderFutureBuilder extends StatelessWidget {
     return _querySnapshot.documents.map((snap) => snap.data).toList();
   }
 
-  Widget orderListViewBuilder(BuildContext context, AsyncSnapshot snapshot) {
-    List<Map<String, dynamic>> list = snapshot.data;
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: getData(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return OrderListViewBuilder(
+          snapshot: snapshot,
+          list: snapshot.data,
+        );
+      },
+    );
+  }
+}
 
+class OrderListViewBuilder extends StatelessWidget {
+  final AsyncSnapshot snapshot;
+
+  final List<Map<String, dynamic>> list;
+
+  OrderListViewBuilder({this.snapshot, this.list});
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.builder(
       physics: BouncingScrollPhysics(),
       itemBuilder: (context, index) {
@@ -34,21 +60,6 @@ class OrderFutureBuilder extends StatelessWidget {
         );
       },
       itemCount: list.length,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getData(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return orderListViewBuilder(context, snapshot);
-      },
     );
   }
 }

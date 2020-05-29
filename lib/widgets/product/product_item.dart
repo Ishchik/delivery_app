@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:delivery_app/models/firestore_product.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delivery_app/models/firestore_product.dart';
+import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
   final FirestoreProduct product;
@@ -27,7 +27,7 @@ class ProductItem extends StatelessWidget {
                     Icons.image,
                     size: 30,
                   ),
-                  imageUrl: product.imageUrl,
+                  imageUrl: product.productImageUrl,
                   height: MediaQuery.of(context).size.height / 3,
                   fit: BoxFit.cover,
                 ),
@@ -44,14 +44,14 @@ class ProductItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Text(
-                          product.name,
+                          product.productName,
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          product.listString(),
+                          product.ingredientsListToString(),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -68,7 +68,7 @@ class ProductItem extends StatelessWidget {
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          '${product.price} USD',
+                          '${product.productPrice} USD',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),

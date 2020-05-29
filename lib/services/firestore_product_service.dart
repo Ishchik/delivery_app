@@ -1,10 +1,11 @@
 import 'dart:collection';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery_app/models/firestore_product.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../models/firestore_product.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class FirestoreProductService extends ChangeNotifier {
   List<FirestoreProduct> _soupList = [];
@@ -73,29 +74,25 @@ class FirestoreProductService extends ChangeNotifier {
     return null;
   }
 
-  FirestoreProduct getProductData(FirestoreProduct product) {
-    return product;
-  }
+  FirestoreProduct getProductData(FirestoreProduct product) => product;
 
   Future<void> changeProductImage(
       FirestoreProduct product, String tabName) async {
     await ImagePicker.pickImage(source: ImageSource.gallery)
         .then((image) async {
-      print(image);
       if (image != null) {
         var _storageRef = FirebaseStorage.instance
             .ref()
-            .child('images/$tabName/${product.name}');
+            .child('images/$tabName/${product.productName}');
         await _storageRef.putFile(image).onComplete.then((snapshot) async {
-          print('uploaded');
           await _storageRef.getDownloadURL().then((url) async {
             await Firestore.instance
                 .collection('product_info')
                 .document('${tabName}_info')
                 .collection(tabName)
-                .document(product.name)
+                .document(product.productName)
                 .updateData({'image_url': url});
-            product.imageUrl = url.toString();
+            product.productImageUrl = url.toString();
           });
         });
       }
@@ -112,28 +109,28 @@ class FirestoreProductService extends ChangeNotifier {
           .collection('product_info')
           .document('${tabName}_info')
           .collection(tabName)
-          .document(product.name);
+          .document(product.productName);
       await transaction.update(docRef, {'price': newPrice});
-      product.price = newPrice;
+      product.productPrice = newPrice;
     });
     notifyListeners();
   }
 
   Future<void> editProductIngredientName(FirestoreProduct product, int index,
       String tabName, String newName) async {
-    product.list[index] = newName;
+    product.ingredientsList[index] = newName;
     await _editProductIngredients(product, tabName);
   }
 
   Future<void> addProductIngredient(
       FirestoreProduct product, String tabName, String newIngredient) async {
-    product.list.add(newIngredient);
+    product.ingredientsList.add(newIngredient);
     await _editProductIngredients(product, tabName);
   }
 
   Future<void> deleteProductIngredient(
       FirestoreProduct product, String tabName, int index) async {
-    product.list.removeAt(index);
+    product.ingredientsList.removeAt(index);
     await _editProductIngredients(product, tabName);
   }
 
@@ -145,8 +142,9 @@ class FirestoreProductService extends ChangeNotifier {
           .collection('product_info')
           .document('${tabName}_info')
           .collection(tabName)
-          .document(product.name);
-      await transaction.update(docRef, {'ingredients': product.list});
+          .document(product.productName);
+      await transaction
+          .update(docRef, {'ingredients': product.ingredientsList});
     });
     notifyListeners();
   }
@@ -177,7 +175,7 @@ class FirestoreProductService extends ChangeNotifier {
           .collection('product_info')
           .document('${group}_info')
           .collection(group)
-          .document(product.name);
+          .document(product.productName);
       await transaction.set(docRef, map);
     });
 
@@ -192,14 +190,16 @@ class FirestoreProductService extends ChangeNotifier {
           .collection('product_info')
           .document('${tabName}_info')
           .collection(tabName)
-          .document(product.name);
+          .document(product.productName);
       await transaction.delete(docRef);
 
-      var _storageRef = FirebaseStorage.instance
-          .ref()
-          .child('images/$tabName/${product.name}');
+      if (product.productImageUrl.isNotEmpty) {
+        var _storageRef = FirebaseStorage.instance
+            .ref()
+            .child('images/$tabName/${product.productName}');
 
-      await _storageRef.delete();
+        await _storageRef.delete();
+      }
 
       switch (tabName) {
         case 'soups':
@@ -212,8 +212,6 @@ class FirestoreProductService extends ChangeNotifier {
           _drinkList.remove(product);
           break;
       }
-
-      print('deleted');
     });
 
     notifyListeners();

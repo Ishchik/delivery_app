@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:delivery_app/constants.dart';
+
 import 'flexible_bottom_sheet.dart';
 
 class SmallBottomSheetContainer extends StatelessWidget {
@@ -9,6 +10,15 @@ class SmallBottomSheetContainer extends StatelessWidget {
 
   SmallBottomSheetContainer(
       {@required this.hintText, @required this.onPressed, this.keyboardType});
+
+  void _setValue(BuildContext context, newValue) {
+    if (keyboardType == TextInputType.number) {
+      onPressed(int.parse(newValue));
+    } else {
+      onPressed(newValue);
+    }
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,21 +31,12 @@ class SmallBottomSheetContainer extends StatelessWidget {
             keyboardType: keyboardType,
             autofocus: true,
             textAlign: TextAlign.center,
-            onChanged: (value) {
-              newValue = value;
-            },
+            onChanged: (value) => newValue = value,
             decoration: kTextFieldDecoration.copyWith(hintText: hintText),
           ),
           FlatButton(
             child: Text('Done'),
-            onPressed: () {
-              if (keyboardType == TextInputType.number) {
-                onPressed(int.parse(newValue));
-              } else {
-                onPressed(newValue);
-              }
-              Navigator.pop(context);
-            },
+            onPressed: () => _setValue(context, newValue),
           )
         ],
       ),

@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import 'checkout_list.dart';
-import 'package:provider/provider.dart';
+import 'package:delivery_app/constants.dart';
 import 'package:delivery_app/services/new_order_service.dart';
 import 'package:delivery_app/services/user_data_service.dart';
-import 'package:delivery_app/constants.dart';
-import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
 import 'package:delivery_app/widgets/common_widgets/big_button.dart';
+import 'package:delivery_app/widgets/common_widgets/flexible_bottom_sheet.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'checkout_list.dart';
 
 class CheckoutCart extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
 
   bool _isHomeChecked = false;
 
-  void setChecked(bool value) {
+  void _setChecked(bool value) {
     if (value) {
       address = Provider.of<UserDataService>(context, listen: false)
           .userDefaultAddress;
@@ -32,6 +32,33 @@ class _CheckoutCartState extends State<CheckoutCart> {
     setState(() {
       _isHomeChecked = value;
     });
+  }
+
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+    );
+  }
+
+  void _checkOut() {
+    try {
+      var newOrderServiceProvider =
+          Provider.of<NewOrderService>(context, listen: false);
+      if (newOrderServiceProvider.hasItems) {
+        if (address.isNotEmpty) {
+          newOrderServiceProvider.checkOut(address);
+          Navigator.pop(context);
+          _showToast('Thanks for the order. Wait for it...');
+        } else {
+          _showToast('Enter the address first');
+        }
+      } else {
+        _showToast('Seems like your cart is empty');
+      }
+    } catch (e) {
+      print(e);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -62,9 +89,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
             child: TextField(
               enabled: !_isHomeChecked,
               textAlign: TextAlign.center,
-              onChanged: (value) {
-                address = value;
-              },
+              onChanged: (value) => address = value,
               decoration:
                   kTextFieldDecoration.copyWith(hintText: 'Enter address'),
             ),
@@ -72,7 +97,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
           CheckboxListTile(
             title: Text('Deliver to home'),
             value: _isHomeChecked,
-            onChanged: setChecked,
+            onChanged: _setChecked,
           ),
           Text(
             'Total price ${Provider.of<NewOrderService>(context).totalPrice}',
@@ -83,30 +108,7 @@ class _CheckoutCartState extends State<CheckoutCart> {
             buttonColor: Colors.red,
             text: 'Checkout',
             textColor: Colors.white,
-            onPressed: () {
-              try {
-                if (Provider.of<NewOrderService>(context, listen: false)
-                    .hasItems) {
-                  if (address.isNotEmpty) {
-                    Provider.of<NewOrderService>(context, listen: false)
-                        .checkOut(address);
-                    Navigator.pop(context);
-                    Fluttertoast.showToast(
-                      msg: 'Thanks for the order. Wait for it...',
-                    );
-                  } else {
-                    Fluttertoast.showToast(msg: 'Enter the address first');
-                  }
-                } else {
-                  Fluttertoast.showToast(
-                    msg: 'Seems like your cart is empty',
-                  );
-                }
-              } catch (e) {
-                print(e);
-                Navigator.pop(context);
-              }
-            },
+            onPressed: () => _checkOut(),
           ),
         ],
       ),

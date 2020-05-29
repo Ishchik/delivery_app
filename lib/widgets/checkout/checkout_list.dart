@@ -1,6 +1,6 @@
 import 'package:delivery_app/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:delivery_app/services/new_order_service.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutList extends StatelessWidget {
